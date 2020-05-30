@@ -30,7 +30,7 @@ con.execute("""
     flag_color            VARCHAR(20) DEFAULT "white",
     flag_color_secondary  VARCHAR(20) DEFAULT "black",
     flag_pattern          VARCHAR(20) DEFAULT "plain",
-    power_type            VARCHAR(20)
+    power_type            VARCHAR(20) DEFAULT "petrol"
   )
 
 """)

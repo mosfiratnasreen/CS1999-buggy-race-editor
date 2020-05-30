@@ -40,7 +40,7 @@ def create_buggy():
     if qty_wheels == "":
        msg.append("Please enter a number.")
     elif not qty_wheels.isdigit():
-       msg.append(f"This is not a valid number of wheels:{qty_wheels}")
+       msg.append(f"This is not a valid number of wheels: {qty_wheels}")
     elif not int(qty_wheels) >= 4:
        msg.append("Please enter more than 4 wheels.")
          
@@ -50,7 +50,7 @@ def create_buggy():
     if flag_color == "":
        msg.append("Please enter a colour.")
     elif not check_color(flag_color):
-       msg.append(f"This is not a valid flag colour:{flag_color}")
+       msg.append(f"This is not a valid flag colour: {flag_color}")
 
     flag_color_secondary = request.form['flag_color_secondary']
     flag_color_secondary = flag_color_secondary.strip()
@@ -58,7 +58,7 @@ def create_buggy():
     if flag_color_secondary == "":
        msg.append("Please enter a secondary colour.")
     elif not check_color(flag_color_secondary):
-       msg.append(f"This is not a valid flag colour:{flag_color_secondary}")
+       msg.append(f"This is not a valid flag colour: {flag_color_secondary}")
 
     flag_pattern = request.form['flag_pattern']
     flag_pattern = flag_pattern.strip()
@@ -66,9 +66,23 @@ def create_buggy():
     patterns = ["plain","vstripe","hstripe","dstripe","checker","spot"]
     if flag_pattern == "":
        msg.append("Please enter a flag pattern")
+       msg.append("Please enter any of the following patterns: plain, vstripe, hstripe, dstripe, checker or spot")
     elif not flag_pattern in patterns:
-       msg.append(f"This is not a valid flag pattern:{flag_pattern}")
-       msg.append("Please enter any of the following patterns: plain, vstripe, hstripe, dstripe, checker, spot")
+       msg.append(f"This is not a valid flag pattern: {flag_pattern}")
+       msg.append("Please enter any of the following patterns: plain, vstripe, hstripe, dstripe, checker or spot")
+
+    power_type = request.form['power_type']
+    power_type= power_type.strip()
+    power_type = power_type.lower()
+    powertypes = ["petrol","fusion","steam","bio","electric","rocket","hamster","thermo","solar","wind"]
+    if power_type == "":
+       msg.append("Please enter a type of power")
+       msg.append("Please enter any of the following types of power: petrol, fusion, steam, bio, electric, rocket, hamster, thermo, solar or wind")
+    elif not power_type in powertypes:
+       msg.append(f"This is not a valid type of power: {power_type}")
+       msg.append("Please enter any of the following types of power: petrol, fusion, steam, bio, electric, rocket, hamster, thermo, solar or wind")
+
+         
        
 
     if len(msg)>0:
@@ -76,8 +90,8 @@ def create_buggy():
     try:
       with sql.connect(DATABASE_FILE) as con:
         cur = con.cursor()
-        cur.execute("UPDATE buggies set qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?  WHERE id=?",
-                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, DEFAULT_BUGGY_ID))
+        cur.execute("UPDATE buggies set qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?  WHERE id=?",
+                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, DEFAULT_BUGGY_ID))
         con.commit()
         msg = "Record successfully saved"
     except:
