@@ -5,9 +5,11 @@
 {% block content %}
 
   <h1>Make buggy</h1>
-  <p>
-    {{ msg }}
-  </p>
+    <div class="message">
+    {% for message in list_of_msg %}
+      <li>{{ message }}</li>
+    {% endfor %}
+  </div>
   <form action="/new" method="post">
 
     <label for="qty_wheels">Number of wheels:</label>

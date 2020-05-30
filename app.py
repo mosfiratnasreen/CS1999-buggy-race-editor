@@ -1,11 +1,19 @@
 from flask import Flask, render_template, request, jsonify
 import sqlite3 as sql
+from colour import Color
 app = Flask(__name__)
 
 DATABASE_FILE = "database.db"
 DEFAULT_BUGGY_ID = "1"
 
 BUGGY_RACE_SERVER_URL = "http://rhul.buggyrace.net"
+
+def check_color(color):
+   try:
+      Color(color)
+      return True
+   except ValueError:
+      return False
 
 
 #------------------------------------------------------------
@@ -27,15 +35,20 @@ def create_buggy():
   elif request.method == 'POST':
     msg=[]
     qty_wheels = request.form['qty_wheels']
+##    print("FIXME wooah I am here at line 38")
     if qty_wheels == "":
        msg.append("Please enter a number.")
     elif not qty_wheels.isdigit():
-       msg.append(f"This is not a valid number of wheels:{qty_wheels}.")
+       msg.append(f"This is not a valid number of wheels:{qty_wheels}")
          
     flag_color = request.form['flag_color']
+    if qty_wheels == "":
+       msg.append("Please enter a colour.")
+    elif not check_color(flag_color):
+       msg.append(f"This is not a valid flag colour:{flag_color}")
 
-    output = ("\n".join(msg))
-    return render_template("buggy-form.html", msg=output)
+    if len(msg)>0:
+       return render_template("buggy-form.html", list_of_msg=msg)
     try:
 ##      msg = f"qty_wheels={qty_wheels}", "flag_color={flag_color}"
       with sql.connect(DATABASE_FILE) as con:
