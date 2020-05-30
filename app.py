@@ -35,6 +35,7 @@ def create_buggy():
   elif request.method == 'POST':
     msg=[]
     qty_wheels = request.form['qty_wheels']
+    qty_wheels = qty_wheels.strip()
 ##    print("FIXME wooah I am here at line 38")
     if qty_wheels == "":
        msg.append("Please enter a number.")
@@ -44,24 +45,39 @@ def create_buggy():
        msg.append("Please enter more than 4 wheels.")
          
     flag_color = request.form['flag_color']
+    flag_color = flag_color.strip()
+    flag_color = flag_color.lower()
     if flag_color == "":
        msg.append("Please enter a colour.")
     elif not check_color(flag_color):
        msg.append(f"This is not a valid flag colour:{flag_color}")
 
     flag_color_secondary = request.form['flag_color_secondary']
+    flag_color_secondary = flag_color_secondary.strip()
+    flag_color_secondary = flag_color_secondary.lower()
     if flag_color_secondary == "":
        msg.append("Please enter a secondary colour.")
     elif not check_color(flag_color_secondary):
        msg.append(f"This is not a valid flag colour:{flag_color_secondary}")
+
+    flag_pattern = request.form['flag_pattern']
+    flag_pattern = flag_pattern.strip()
+    flag_pattern = flag_pattern.lower()
+    patterns = ["plain","vstripe","hstripe","dstripe","checker","spot"]
+    if flag_pattern == "":
+       msg.append("Please enter a flag pattern")
+    elif not flag_pattern in patterns:
+       msg.append(f"This is not a valid flag pattern:{flag_pattern}")
+       msg.append("Please enter any of the following patterns: plain, vstripe, hstripe, dstripe, checker, spot")
+       
 
     if len(msg)>0:
        return render_template("buggy-form.html", list_of_msg=msg)
     try:
       with sql.connect(DATABASE_FILE) as con:
         cur = con.cursor()
-        cur.execute("UPDATE buggies set qty_wheels=?, flag_color=?  WHERE id=?",
-                    (qty_wheels, flag_color, DEFAULT_BUGGY_ID))
+        cur.execute("UPDATE buggies set qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?  WHERE id=?",
+                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, DEFAULT_BUGGY_ID))
         con.commit()
         msg = "Record successfully saved"
     except:
