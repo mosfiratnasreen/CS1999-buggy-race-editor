@@ -52,7 +52,6 @@ def create_buggy():
     if len(msg)>0:
        return render_template("buggy-form.html", list_of_msg=msg)
     try:
-##      msg = f"qty_wheels={qty_wheels}", "flag_color={flag_color}"
       with sql.connect(DATABASE_FILE) as con:
         cur = con.cursor()
         cur.execute("UPDATE buggies set qty_wheels=?, flag_color=?  WHERE id=?",
