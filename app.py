@@ -38,7 +38,7 @@ def create_buggy():
     qty_wheels = qty_wheels.strip()
 ##    print("FIXME wooah I am here at line 38")
     if qty_wheels == "":
-       msg.append("Please enter a number.")
+       msg.append("Please enter a number for quantity of wheels.")
     elif not qty_wheels.isdigit():
        msg.append(f"This is not a valid number of wheels: {qty_wheels}")
     elif not int(qty_wheels) >= 4:
@@ -72,7 +72,7 @@ def create_buggy():
        msg.append("Please enter any of the following patterns: plain, vstripe, hstripe, dstripe, checker or spot")
 
     power_type = request.form['power_type']
-    power_type= power_type.strip()
+    power_type = power_type.strip()
     power_type = power_type.lower()
     powertypes = ["petrol","fusion","steam","bio","electric","rocket","hamster","thermo","solar","wind"]
     if power_type == "":
@@ -82,7 +82,14 @@ def create_buggy():
        msg.append(f"This is not a valid type of power: {power_type}")
        msg.append("Please enter any of the following types of power: petrol, fusion, steam, bio, electric, rocket, hamster, thermo, solar or wind")
 
-         
+    power_units = request.form['power_units']
+    power_units = power_units.strip()
+    if power_units == "":
+       msg.append("Please enter a number for quantity of power units.")
+    elif not power_units.isdigit():
+       msg.append(f"This is not a valid unit of power: {power_units}")
+    elif not int(qty_wheels) >= 1:
+       msg.append("Please enter more than 1 unit.")
        
 
     if len(msg)>0:
@@ -90,8 +97,8 @@ def create_buggy():
     try:
       with sql.connect(DATABASE_FILE) as con:
         cur = con.cursor()
-        cur.execute("UPDATE buggies set qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?  WHERE id=?",
-                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, DEFAULT_BUGGY_ID))
+        cur.execute("UPDATE buggies set qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?, power_units=?  WHERE id=?",
+                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, DEFAULT_BUGGY_ID))
         con.commit()
         msg = "Record successfully saved"
     except:
