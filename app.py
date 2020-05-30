@@ -49,6 +49,12 @@ def create_buggy():
     elif not check_color(flag_color):
        msg.append(f"This is not a valid flag colour:{flag_color}")
 
+    flag_color_secondary = request.form['flag_color_secondary']
+    if flag_color_secondary == "":
+       msg.append("Please enter a secondary colour.")
+    elif not check_color(flag_color_secondary):
+       msg.append(f"This is not a valid flag colour:{flag_color_secondary}")
+
     if len(msg)>0:
        return render_template("buggy-form.html", list_of_msg=msg)
     try:

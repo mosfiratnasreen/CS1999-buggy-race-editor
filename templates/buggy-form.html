@@ -4,7 +4,7 @@
 
 {% block content %}
 
-  <h1>Make buggy</h1>
+  <h1>Make Buggy</h1>
     <div class="message">
     {% for message in list_of_msg %}
       <li>{{ message }}</li>
@@ -12,11 +12,14 @@
   </div>
   <form action="/new" method="post">
 
-    <label for="qty_wheels">Number of wheels:</label>
+    <label for="qty_wheels">Number of Wheels:</label>
     <input type="text" name="qty_wheels" />
 
-    <label for="flag_color">Colour of flag:</label>
+    <label for="flag_color">Colour of Flag:</label>
     <input type="text" name="flag_color" />
+
+   <label for="flag_color_secondary">Secondary Colour of Flag:</label>
+    <input type="text" name="flag_color_secondary" /> 
     
     <input type="submit" class="button">
   </form>
