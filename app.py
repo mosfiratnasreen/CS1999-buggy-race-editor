@@ -25,13 +25,23 @@ def create_buggy():
   if request.method == 'GET':
     return render_template("buggy-form.html")
   elif request.method == 'POST':
-    msg=""
+    msg=[]
+    qty_wheels = request.form['qty_wheels']
+    if qty_wheels == "":
+       msg.append("Please enter a number.")
+    elif not qty_wheels.isdigit():
+       msg.append(f"This is not a valid number of wheels:{qty_wheels}.")
+         
+    flag_color = request.form['flag_color']
+
+    output = ("\n".join(msg))
+    return render_template("buggy-form.html", msg=output)
     try:
-      qty_wheels = request.form['qty_wheels']
-      msg = f"qty_wheels={qty_wheels}" 
+##      msg = f"qty_wheels={qty_wheels}", "flag_color={flag_color}"
       with sql.connect(DATABASE_FILE) as con:
         cur = con.cursor()
-        cur.execute("UPDATE buggies set qty_wheels=? WHERE id=?", (qty_wheels, DEFAULT_BUGGY_ID))
+        cur.execute("UPDATE buggies set qty_wheels=?, flag_color=?  WHERE id=?",
+                    (qty_wheels, flag_color, DEFAULT_BUGGY_ID))
         con.commit()
         msg = "Record successfully saved"
     except:
