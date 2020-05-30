@@ -40,9 +40,11 @@ def create_buggy():
        msg.append("Please enter a number.")
     elif not qty_wheels.isdigit():
        msg.append(f"This is not a valid number of wheels:{qty_wheels}")
+    elif not int(qty_wheels) >= 4:
+       msg.append("Please enter more than 4 wheels.")
          
     flag_color = request.form['flag_color']
-    if qty_wheels == "":
+    if flag_color == "":
        msg.append("Please enter a colour.")
     elif not check_color(flag_color):
        msg.append(f"This is not a valid flag colour:{flag_color}")
