@@ -3,23 +3,24 @@ html{
   padding: 0; 
 }
 body {
-  font-family: "Source Sans Pro","Helvetica Neue",Arial,Helvetica,sans-serif;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
   margin: 0;
   padding: 0;
   font-size: 1.2em;
   color: #000000;
   background: repeating-linear-gradient(
-    45deg,
-    #ffffee,
-    #ffffee 2em,
-    #eeeeee 2em,
-    #eeeeee 4em
+    315deg,
+    #666699,
+    #666699 2em,
+    #ccccff 2em,
+    #ccccff 4em
   );
 }
 .main-content {
   min-height:100vh;
   padding: 1em;
-  background: white;
+  background: #f2f2f2;
+  text-align: center;
   margin: 0 0 0 3em;
 }
 h1 {
@@ -34,20 +35,20 @@ a.button, input.button {
   margin:0.5em;
   border-radius: 0.25em;
   text-decoration: none;
-  background-color: white;
-  color: black;
+  background-color: #666699;
+  color: white;
   box-shadow: 5px 5px 5px #999999;
 }
 a.button:hover {
-  background-color: black;
-  color: white;
+  background-color: #ccccff;
+  color: black;
 }
 input {
   padding: 0.5em;
   font-size:100%;
 }
 input.button {
-  background-color: #99ff99;
+  background-color: #666699;
 }
 table {
   border:1px solid black;
@@ -55,9 +56,13 @@ table {
   margin: 0 0 2em 0;
 }
 table td, table th {
-  padding: 0.25em;
-  border: 1px solid #999;
-  padding: 0.5rem;
+  padding: 1em;
+  border: 5px solid #9494b8;
+  padding: 1rem;
+}
+table.center{
+  margin-left: auto;
+  margin-right: auto;
 }
 .spacer {
   margin: 3em 0;

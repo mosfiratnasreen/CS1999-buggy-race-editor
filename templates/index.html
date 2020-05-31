@@ -2,27 +2,28 @@
 
 {% block content %}
 
-  <h1>
+  <h1 style="font-family: trebuchet ms">
     My Buggy Editor
   </h1>
 
-  <div class="spacer">
+  <div class="spacer" style="font-family: trebuchet ms">
     <a href="/new" class="button">Make buggy</a>
     <a href="/buggy" class="button">Show buggy</a>
     <a href="/json" class="button">Get buggy JSON</a>
   </div>
 
-  <p>
+  <p style="font-family: trebuchet ms">
     Use this editor to specify a racing buggy. The editor saves it in its
     little database and generates JSON data for the buggy. This is the data you
     need to supply when you log into the
     <strong><a href="{{ server_url }}">race server</a></strong> and enter your
     buggy into the next race.
   </p>
-  <p>
+  <p style="font-family: trebuchet ms">
     Remember that if your data is not accepted by the race server, your buggy
     will be disqualified from that race... so make sure you program your editor
     correctly.
   </p>
+  <img src="static/buggy.png">
 
 {% endblock %}

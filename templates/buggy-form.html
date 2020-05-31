@@ -4,35 +4,50 @@
 
 {% block content %}
 
-  <h1>Make Buggy</h1>
-    <div class="message">
+  <h1 style="font-family: trebuchet ms">Make Buggy</h1>
+    <div class="message" style="font-family: trebuchet ms">
     {% for message in list_of_msg %}
       <li>{{ message }}</li>
     {% endfor %}
   </div>
   <form action="/new" method="post">
 
-    <label for="qty_wheels">Number of Wheels:</label>
-    <input type="text" name="qty_wheels" />
+  <table class="center">
+    <tr style="font-family: trebuchet ms">
+      <td><label for="qty_wheels">Number of Wheels:</label></td>
+      <td><input type="text" name="qty_wheels" /></td>
+    </tr>
 
-    <label for="flag_color">Colour of Flag:</label>
-    <input type="text" name="flag_color" />
+    <tr style="font-family: trebuchet ms">
+      <td><label for="flag_color">Colour of Flag:</label></td>
+      <td><input type="text" name="flag_color" /></td>
+    </tr>
 
-    <label for="flag_color_secondary">Secondary Colour of Flag:</label>
-    <input type="text" name="flag_color_secondary" /> 
+    <tr style="font-family: trebuchet ms">
+      <td><label for="flag_color_secondary">Secondary Colour of Flag:</label></td>
+      <td><input type="text" name="flag_color_secondary" /></td>
+    </tr>
 
-    <label for="flag_pattern">Flag Pattern:</label>
-    <input type="text" name="flag_pattern" /> 
+    <tr style="font-family: trebuchet ms">
+      <td><label for="flag_pattern">Flag Pattern:</label></td>
+      <td><input type="text" name="flag_pattern" /></td>
+    </tr>
 
-    <label for="power_type">Power Type:</label>
-    <input type="text" name="power_type" /> 
+    <tr style="font-family: trebuchet ms">
+      <td><label for="power_type">Power Type:</label></td>
+      <td><input type="text" name="power_type" /></td>
+    </tr>
 
-    <label for="power_units">Units of Power:</label>
-    <input type="text" name="power_units" /> 
-    
-    <input type="submit" class="button">
+    <tr style="font-family: trebuchet ms">
+      <td><label for="power_units">Units of Power:</label></td>
+      <td><input type="text" name="power_units" /></td>
+    </tr>
+    </table>
+
+    <input type="submit" class="button" style="font-family: trebuchet ms">
   </form>
   <p>
-    <a href="/" class="button">home</a>
+    <a href="/" class="button">Home</a>
    </p>
+   <img src="static/buggy.png">
 {% endblock %}
