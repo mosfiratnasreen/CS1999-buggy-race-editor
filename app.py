@@ -65,7 +65,6 @@ def create_buggy():
     flag_pattern = flag_pattern.lower()
     patterns = ["plain","vstripe","hstripe","dstripe","checker","spot"]
     if flag_pattern == "":
-       msg.append("Please enter a flag pattern")
        msg.append("Please enter any of the following patterns: plain, vstripe, hstripe, dstripe, checker or spot")
     elif not flag_pattern in patterns:
        msg.append(f"This is not a valid flag pattern: {flag_pattern}")
@@ -76,7 +75,6 @@ def create_buggy():
     power_type = power_type.lower()
     powertypes = ["petrol","fusion","steam","bio","electric","rocket","hamster","thermo","solar","wind"]
     if power_type == "":
-       msg.append("Please enter a type of power")
        msg.append("Please enter any of the following types of power: petrol, fusion, steam, bio, electric, rocket, hamster, thermo, solar or wind")
     elif not power_type in powertypes:
        msg.append(f"This is not a valid type of power: {power_type}")
