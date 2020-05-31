@@ -37,18 +37,17 @@ def create_buggy():
      cur.execute("SELECT * FROM buggies")
      record = cur.fetchone();
      return render_template("buggy-form.html", buggy=record)
-  elif request.method == 'POST':
+  elif request.method == 'POST': 
     msg=[]
     qty_wheels = request.form['qty_wheels']
     qty_wheels = qty_wheels.strip()
-##    print("FIXME wooah I am here at line 38")
     if qty_wheels == "":
        msg.append("Please enter a number for quantity of wheels.")
     elif not qty_wheels.isdigit():
        msg.append(f"This is not a valid number of wheels: {qty_wheels}")
     elif not int(qty_wheels) >= 4:
        msg.append("Please enter more than 4 wheels.")
-         
+
     flag_color = request.form['flag_color']
     flag_color = flag_color.strip()
     flag_color = flag_color.lower()
@@ -93,9 +92,15 @@ def create_buggy():
        msg.append(f"This is not a valid unit of power: {power_units}")
     elif not int(power_units) >= 1:
        msg.append("Please enter more than 1 unit.")
+
+    con = sql.connect(DATABASE_FILE)
+    con.row_factory = sql.Row
+    cur = con.cursor()
+    cur.execute("SELECT * FROM buggies")
+    record = cur.fetchone();
        
     if len(msg)>0:
-       return render_template("buggy-form.html", list_of_msg=msg)
+       return render_template("buggy-form.html", list_of_msg=msg, buggy=record)
     try:
       with sql.connect(DATABASE_FILE) as con:
         cur = con.cursor()
@@ -103,12 +108,6 @@ def create_buggy():
                     (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, DEFAULT_BUGGY_ID))
         con.commit()
         msg = "Record successfully saved"
-##        con = sql.connect(DATABASE_FILE)
-##        con.row_factory = sql.Row
-##        cur = con.cursor()
-##        cur.execute("SELECT * FROM buggies")
-##        record = cur.fetchone();
-##        return render_template("buggy-form.html", buggy=record)
     except:
       con.rollback()
       msg = "error in update operation"

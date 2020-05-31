@@ -5,11 +5,16 @@
 {% block content %}
 
   <h1 style="font-family: trebuchet ms">Make Buggy</h1>
-    <div class="message" style="font-family: trebuchet ms">
+  <p style="font-family: trebuchet ms">Default values will be initially pre-entered into the form until successfully changed otherwise</p> 
+
+<p>
+  <div class="message" style="font-family: trebuchet ms">
     {% for message in list_of_msg %}
       <li>{{ message }}</li>
     {% endfor %}
   </div>
+</p>
+
   <form action="/new" method="post">
 
   <table class="center">
