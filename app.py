@@ -91,10 +91,9 @@ def create_buggy():
        msg.append("Please enter a number for quantity of power units.")
     elif not power_units.isdigit():
        msg.append(f"This is not a valid unit of power: {power_units}")
-    elif not int(qty_wheels) >= 1:
+    elif not int(power_units) >= 1:
        msg.append("Please enter more than 1 unit.")
        
-
     if len(msg)>0:
        return render_template("buggy-form.html", list_of_msg=msg)
     try:
@@ -104,6 +103,12 @@ def create_buggy():
                     (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, DEFAULT_BUGGY_ID))
         con.commit()
         msg = "Record successfully saved"
+##        con = sql.connect(DATABASE_FILE)
+##        con.row_factory = sql.Row
+##        cur = con.cursor()
+##        cur.execute("SELECT * FROM buggies")
+##        record = cur.fetchone();
+##        return render_template("buggy-form.html", buggy=record)
     except:
       con.rollback()
       msg = "error in update operation"
