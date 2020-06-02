@@ -36,6 +36,7 @@ con.execute("""
     power_units           INTEGER DEFAULT 1,
     aux_power_type        VARCHAR (20),
     aux_power_units       INTEGER DEFAULT 0,
+    armour                VARCHAR (20) DEFAULT "none",
     total_cost            INTEGER
   )
 

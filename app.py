@@ -60,7 +60,6 @@ def create_buggy():
        msg.append (f"This is not a valid type of tyre: {tyres}")
        msg.append("Please enter any of the following tyre types: knobbly, slick, steelband, reactive or maglev")
        
-
     qty_tyres = request.form['qty_tyres']
     qty_tyres = qty_tyres.strip()
     if tyres == "":
@@ -70,7 +69,6 @@ def create_buggy():
     elif not int(qty_tyres) >= int(qty_wheels):
        msg.append(f"Please enter more than {qty_wheels} tyres")
        
-
     flag_color = request.form['flag_color']
     flag_color = flag_color.strip()
     flag_color = flag_color.lower()
@@ -139,6 +137,17 @@ def create_buggy():
        msg.append("Please enter more than 1 unit.")
     elif not aux_power_units.isdigit():
        msg.append(f"This is not a valid unit of backup power: {aux_power_units}")
+
+    armour = request.form['armour']
+    armour = armour.strip()
+    armour = armour.lower()
+    armourtypes = ["none", "wood", "aluminium", "thinsteel", "thicksteel", "titanium"]
+    if armour == "":
+       msg.append("Please enter any of the following types of armour: none, wood, aluminium, thinsteel, thicksteel or titanium")
+       msg.append("If you would not like armour please type in: none")
+    elif not armour in armourtypes:
+       msg.append(f"This is not a valid type of armour: {armour}")
+       msg.append("Please enter any of the following types of armour: none, wood, aluminium, thinsteel, thicksteel or titanium")
        
     
 

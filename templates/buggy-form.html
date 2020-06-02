@@ -60,14 +60,20 @@
     </tr>
 
     <tr style="font-family: trebuchet ms">
-      <td><label for="power_units">Backup Power Type:</label></td>
+      <td><label for="aux_power_type">Backup Power Type:</label></td>
       <td><input type="text" name="power_units" value="{{ buggy['aux_power_type'] }}"/></td>
     </tr>
 
     <tr style="font-family: trebuchet ms">
-      <td><label for="power_units">Backup Power Units:</label></td>
+      <td><label for="aux_power_units">Backup Power Units:</label></td>
       <td><input type="text" name="power_units" value="{{ buggy['aux_power_units'] }}"/></td>
     </tr>
+
+    <tr style="font-family: trebuchet ms">
+      <td><label for="armour">Armour type:</label></td>
+      <td><input type="text" name="armour" value="{{ buggy['armour'] }}"/></td>
+    </tr>
+
     </table>
 
     <input type="submit" class="button" style="font-family: trebuchet ms">
