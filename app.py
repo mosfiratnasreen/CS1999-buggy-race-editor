@@ -38,15 +38,38 @@ def create_buggy():
      record = cur.fetchone();
      return render_template("buggy-form.html", buggy=record)
   elif request.method == 'POST': 
+
     msg=[]
+    
     qty_wheels = request.form['qty_wheels']
     qty_wheels = qty_wheels.strip()
     if qty_wheels == "":
-       msg.append("Please enter a number for quantity of wheels.")
+       msg.append("Please enter a number for quantity of wheels")
     elif not qty_wheels.isdigit():
        msg.append(f"This is not a valid number of wheels: {qty_wheels}")
     elif not int(qty_wheels) >= 4:
-       msg.append("Please enter more than 4 wheels.")
+       msg.append("Please enter more than 4 wheels")
+
+    tyres = request.form['tyres']
+    tyres = tyres.strip()
+    tyres = tyres.lower()
+    tyretypes = ["knobbly", "slick", "steelband", "reactive", "maglev"]
+    if tyres == "":
+       msg.append("Please enter any of the following tyre types: knobbly, slick, steelband, reactive or maglev")
+    elif not tyres in tyretypes:
+       msg.append (f"This is not a valid type of tyre: {tyres}")
+       msg.append("Please enter any of the following tyre types: knobbly, slick, steelband, reactive or maglev")
+       
+
+    qty_tyres = request.form['qty_tyres']
+    qty_tyres = qty_tyres.strip()
+    if tyres == "":
+       msg.append("Please enter a number for quantity of tyres including spares.")
+    elif not qty_tyres.isdigit():
+       msg.append(f"This is not a valid number of tyres: {tyres}")
+    elif not int(qty_tyres) >= int(qty_wheels):
+       msg.append(f"Please enter more than {qty_wheels} tyres")
+       
 
     flag_color = request.form['flag_color']
     flag_color = flag_color.strip()
