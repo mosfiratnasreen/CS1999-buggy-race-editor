@@ -93,6 +93,11 @@ def create_buggy():
     elif not int(power_units) >= 1:
        msg.append("Please enter more than 1 unit.")
 
+    nonconsumable = ["fusion","thermo","solar"]
+    if power_type in nonconsumable:
+       if int(power_units) >1:
+          msg.append("Fusion, thermo and solar cannot have power units of greater than 1 as they are non-consumable power.")
+
     con = sql.connect(DATABASE_FILE)
     con.row_factory = sql.Row
     cur = con.cursor()
@@ -126,6 +131,18 @@ def show_buggies():
   cur.execute("SELECT * FROM buggies")
   record = cur.fetchone(); 
   return render_template("buggy.html", buggy = record)
+
+def total_cost():
+  con = sql.connect(DATABASE_FILE)
+  con.row_factory = sql.Row
+  cur = con.cursor()
+  cur.execute("SELECT * FROM buggies")
+  record = cur.fetchone();
+  for value in buggies:
+     total = total + value
+     print (total)
+  return render_template("buggy.html", total_cost = total)
+  
 
 #------------------------------------------------------------
 # a page for displaying the buggy

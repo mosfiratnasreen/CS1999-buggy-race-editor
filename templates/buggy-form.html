@@ -6,6 +6,7 @@
 
   <h1 style="font-family: trebuchet ms">Make Buggy</h1>
   <p style="font-family: trebuchet ms">Default values will be initially pre-entered into the form until successfully changed otherwise</p> 
+  <p style="font-family: trebuchet ms">If you would not like a backup type of power, please leave the respective form empty </p> 
 
 <p>
   <div class="message" style="font-family: trebuchet ms">
@@ -46,6 +47,11 @@
     <tr style="font-family: trebuchet ms">
       <td><label for="power_units">Units of Power:</label></td>
       <td><input type="text" name="power_units" value="{{ buggy['power_units'] }}"/></td>
+    </tr>
+
+    <tr style="font-family: trebuchet ms">
+      <td><label for="power_units">Backup Power Type:</label></td>
+      <td><input type="text" name="power_units" value="{{ buggy['aux_power_type'] }}"/></td>
     </tr>
     </table>
 
