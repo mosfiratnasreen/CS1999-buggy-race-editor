@@ -98,6 +98,27 @@ def create_buggy():
        if int(power_units) >1:
           msg.append("Fusion, thermo and solar cannot have power units of greater than 1 as they are non-consumable power.")
 
+    aux_power_type = request.form['aux_power_type']
+    aux_power_type = aux_power_type.strip()
+    aux_power_units = aux_power_units.lower()
+    if not aux_power_type in powertypes:
+       msg.append(f"This is not a valid backup type of power: {aux_power_type}")
+       msg.append("If you would like a backup type of power, please enter any of the following types of power: petrol, fusion, steam, bio, electric, rocket, hamster, thermo, solar or wind")
+
+    aux_power_units = request.form['aux_power_units']
+    aux_power_units = aux_power_units.strip()
+    if aux_power_type == "":
+       if not aux_power_units.isdigit():
+          msg.append("As you have not selected a backup type of power, you cannot put backup power units")
+       elif int(aux_power_units) >0:
+          msg.append("As you have not selected a backup type of power, you cannot put backup power units")
+    elif not int(aux_power_units) >0:
+       msg.append("Please enter more than 1 unit.")
+    elif not aux_power_units.isdigit():
+       msg.append(f"This is not a valid unit of backup power: {aux_power_units}")
+       
+    
+
     con = sql.connect(DATABASE_FILE)
     con.row_factory = sql.Row
     cur = con.cursor()

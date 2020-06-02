@@ -32,6 +32,8 @@ con.execute("""
     flag_pattern          VARCHAR(20) DEFAULT "plain",
     power_type            VARCHAR(20) DEFAULT "petrol",
     power_units           INTEGER DEFAULT 1,
+    aux_power_type        VARCHAR (20),
+    aux_power_units       INTEGER DEFAULT 0,
     total_cost            INTEGER
   )
 
