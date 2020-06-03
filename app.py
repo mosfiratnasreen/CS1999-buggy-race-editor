@@ -149,7 +149,18 @@ def create_buggy():
        msg.append(f"This is not a valid type of armour: {armour}")
        msg.append("Please enter any of the following types of armour: none, wood, aluminium, thinsteel, thicksteel or titanium")
        
-    
+    attack = request.form['attack']
+    attack = attack.strip()
+    attack = attack.lower()
+    attacktypes = ["none","spike","flame","charge","biohazard"]
+    if attack == "":
+       msg.append("Please enter any of the following attack methods: none, spike, flame, charge, biohazard")
+       msg.append("If you would not like an attack method please type in: none")
+    elif not attack in attacktypes:
+       msg.append(f"This is not a valid method of attack: {attack}")
+       msg.append("Please enter any of the following attack methods: none, spike, flame, charge, biohazard")
+       
+       
 
     con = sql.connect(DATABASE_FILE)
     con.row_factory = sql.Row
