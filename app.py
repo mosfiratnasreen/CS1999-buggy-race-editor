@@ -177,19 +177,7 @@ def create_buggy():
     elif not int(qty_attacks) >0:
        msg.append("Please enter more than 0 number of attacks.")
 
-    fireproof = request.form['fireproof']
-    fireproof = fireproof.strip()
-    fireproof = fireproof.lower()
-    boolean = ["true","false"]
-    if fireproof == "":
-       msg.append ("Please enter either true or false for this field.")
-    elif fireproof == "true":
-       fireproof == True
-    elif fireproof == "false":
-       fireproof == False
-    elif not fireproof in boolean:
-       msg.append ("Please enter either true or false for this field.")
-
+    
     
     con = sql.connect(DATABASE_FILE)
     con.row_factory = sql.Row
