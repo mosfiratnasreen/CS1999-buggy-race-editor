@@ -177,7 +177,64 @@ def create_buggy():
     elif not int(qty_attacks) >0:
        msg.append("Please enter more than 0 number of attacks.")
 
-    
+    fireproof = request.form['fireproof']
+    fireproof = fireproof.strip()
+    fireproof = fireproof.lower()
+    boolean = ["true","false"]
+    if fireproof == "":
+       msg.append ("Please enter either true or false for 'Is the buggy fireproof?'.")
+    elif fireproof == "true":
+       fireproof == True
+    elif fireproof == "false":
+       fireproof == False
+    elif not fireproof in boolean:
+       msg.append ("Please enter either true or false for 'Is the buggy fireproof?'.")
+
+    insulated = request.form['insulated']
+    insulated = insulated.strip()
+    insulated = insulated.lower()
+    if insulated == "":
+       msg.append ("Please enter either true or false for 'Is the buggy insulated?'.")
+    elif insulated == "true":
+       insulated == True
+    elif insulated == "false":
+       insulated == False
+    elif not insulated in boolean:
+       msg.append ("Please enter either true or false for 'Is the buggy insulated?'.")
+
+    antibiotic = request.form['antibiotic']
+    antibiotic = antibiotic.strip()
+    antibiotic = antibiotic.lower()
+    if antibiotic == "":
+       msg.append ("Please enter either true or false for 'Is the buggy antibiotic?'.")
+    elif antibiotic == "true":
+       antibiotic == True
+    elif antibiotic == "false":
+       antibiotic == False
+    elif not antibiotic in boolean:
+       msg.append ("Please enter either true or false for 'Is the buggy antibiotic?'.")
+
+    banging = request.form['banging']
+    banging = banging.strip()
+    banging = banging.lower()
+    if banging == "":
+       msg.append ("Please enter either true or false for 'Does the buggy have a good sound system?'.")
+    elif banging == "true":
+       banging == True
+    elif banging == "false":
+       banging == False
+    elif not banging in boolean:
+       msg.append ("Please enter either true or false for 'Does the buggy have a good sound system?'.")
+
+    algo = request.form['algo']
+    algo = algo.strip()
+    algo = algo.lower()
+    algotypes = ["defensive","steady","offensive","titfortat","random","buggy"]
+    if algo == "":
+       msg.append("Please enter any of the following algorithms: defensive, steady, offensive, titfortat, random or buggy")
+    elif not algo in algotypes:
+       msg.append(f"This is not a valid method of algorithm: {algo}")
+       msg.append("Please enter any of the following algorithms: defensive, steady, offensive, titfortat, random or buggy")
     
     con = sql.connect(DATABASE_FILE)
     con.row_factory = sql.Row
@@ -190,8 +247,8 @@ def create_buggy():
     try:
       with sql.connect(DATABASE_FILE) as con:
         cur = con.cursor()
-        cur.execute("UPDATE buggies set qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?, power_units=?  WHERE id=?",
-                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, DEFAULT_BUGGY_ID))
+        cur.execute("UPDATE buggies set qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, armour=?, attack=?, qty_attacks=?, fireproof=?, insulated=?, antibiotic=?, banging=?, algo=?  WHERE id=?",
+                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type, aux_power_units, armour, attack, qty_attacks, fireproof, insulated, antibiotic, banging, algo, DEFAULT_BUGGY_ID))
         con.commit()
         msg = "Record successfully saved"
     except:
