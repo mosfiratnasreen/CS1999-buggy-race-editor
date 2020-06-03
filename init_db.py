@@ -39,6 +39,7 @@ con.execute("""
     armour                VARCHAR (20) DEFAULT "none",
     attack                VARCHAR (20) DEFAULT "none",
     qty_attacks           INTEGER DEFAULT 0,
+    fireproof             BOOLEAN DEFAULT false,
     total_cost            INTEGER
   )
 

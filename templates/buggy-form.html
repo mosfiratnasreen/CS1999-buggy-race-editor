@@ -7,6 +7,7 @@
   <h1 style="font-family: trebuchet ms">Make Buggy</h1>
   <p style="font-family: trebuchet ms">Default values will be initially pre-entered into the form until successfully changed otherwise</p> 
   <p style="font-family: trebuchet ms">If you would not like a backup type of power, please leave the respective form empty </p> 
+  <p style="font-family: trebuchet ms">For forms ending in a '?' i.e. is the buggy fireproof? please enter true or false</p> 
 
 <p>
   <div class="message" style="font-family: trebuchet ms">
@@ -82,6 +83,11 @@
     <tr style="font-family: trebuchet ms">
       <td><label for="qty_attacks">Number of Attacks:</label></td>
       <td><input type="text" name="qty_attacks" value="{{ buggy['qty_attacks'] }}"/></td>
+    </tr>
+
+    <tr style="font-family: trebuchet ms">
+      <td><label for="fireproof">Is the buggy fireproof?:</label></td>
+      <td><input type="text" name="fireproof" value="{{ buggy['fireproof'] }}"/></td>
     </tr>
 
     </table>
