@@ -160,7 +160,14 @@ def create_buggy():
        msg.append(f"This is not a valid method of attack: {attack}")
        msg.append("Please enter any of the following attack methods: none, spike, flame, charge, biohazard")
        
-       
+    qty_attacks = request.form['qty_attacks']
+    qty_attacks = qty_attacks.strip()
+    if qty_attacks == "":
+       msg.append("Please enter a number for quantity of attacks.")
+    elif not qty_attacks.isdigit():
+       msg.append(f"This is not a valid number of attacks: {qty_attacks}")
+    elif not int(qty_attacks) >0:
+       msg.append("Please enter more than 0 units.")
 
     con = sql.connect(DATABASE_FILE)
     con.row_factory = sql.Row

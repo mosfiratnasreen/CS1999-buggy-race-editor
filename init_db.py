@@ -38,6 +38,7 @@ con.execute("""
     aux_power_units       INTEGER DEFAULT 0,
     armour                VARCHAR (20) DEFAULT "none",
     attack                VARCHAR (20) DEFAULT "none",
+    qty_attacks           INTEGER DEFAULT 0,
     total_cost            INTEGER
   )
 
