@@ -98,7 +98,7 @@ def create_buggy():
     power_type = request.form['power_type']
     power_type = power_type.strip()
     power_type = power_type.lower()
-    powertypes = ["petrol","fusion","steam","bio","electric","rocket","hamster","thermo","solar","wind"]
+    powertypes = ["petrol","fusion","steam","bio","electric","rocket","hamster","thermo","solar","wind","none"]
     if power_type == "":
        msg.append("Please enter any of the following types of power: petrol, fusion, steam, bio, electric, rocket, hamster, thermo, solar or wind")
     elif not power_type in powertypes:
@@ -121,10 +121,12 @@ def create_buggy():
 
     aux_power_type = request.form['aux_power_type']
     aux_power_type = aux_power_type.strip()
-    aux_power_units = aux_power_units.lower()
+    aux_power_type = aux_power_type.lower()
     if not aux_power_type in powertypes:
        msg.append(f"This is not a valid backup type of power: {aux_power_type}")
        msg.append("If you would like a backup type of power, please enter any of the following types of power: petrol, fusion, steam, bio, electric, rocket, hamster, thermo, solar or wind")
+    elif aux_power_type == "none":
+       pass
 
     aux_power_units = request.form['aux_power_units']
     aux_power_units = aux_power_units.strip()
@@ -133,10 +135,13 @@ def create_buggy():
           msg.append("As you have not selected a backup type of power, you cannot put backup power units")
        elif int(aux_power_units) >0:
           msg.append("As you have not selected a backup type of power, you cannot put backup power units")
-    elif not int(aux_power_units) >0:
-       msg.append("Please enter more than 1 unit.")
+    elif aux_power_type == "none":
+       if int(aux_power_units) >0:
+          msg.append("As you have selected no backup type of power, you cannot have more than 0 units of backup power. Please change this back to 0")
     elif not aux_power_units.isdigit():
        msg.append(f"This is not a valid unit of backup power: {aux_power_units}")
+    elif int(aux_power_units) >0:
+       msg.append("Please enter more than 1 unit of backup power.")
 
     armour = request.form['armour']
     armour = armour.strip()
@@ -166,8 +171,11 @@ def create_buggy():
        msg.append("Please enter a number for quantity of attacks.")
     elif not qty_attacks.isdigit():
        msg.append(f"This is not a valid number of attacks: {qty_attacks}")
+    elif attack == "none":
+       if qty_attacks == "0":
+          pass
     elif not int(qty_attacks) >0:
-       msg.append("Please enter more than 0 units.")
+       msg.append("Please enter more than 0 number of attacks.")
 
     fireproof = request.form['fireproof']
     fireproof = fireproof.strip()
