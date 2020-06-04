@@ -5,8 +5,8 @@
 {% block content %}
 
   <h1 style="font-family: trebuchet ms">Make Buggy</h1>
-  <p style="font-family: trebuchet ms">Default values will be initially pre-entered into the form until successfully changed otherwise</p> 
-  <p style="font-family: trebuchet ms">If you would not like a backup type of power, please leave the respective form empty </p> 
+  <p style="font-family: trebuchet ms">Default values will be initially pre-entered into the form until successfully changed otherwise</p>  
+  <p style="font-family: trebuchet ms">Hamster boosters are only available if either power type ot backup power type is hamster</p> 
 
 <p>
   <div class="message" style="font-family: trebuchet ms">
@@ -67,6 +67,11 @@
     <tr style="font-family: trebuchet ms">
       <td><label for="aux_power_units">Backup Power Units:</label></td>
       <td><input type="text" name="aux_power_units" value="{{ buggy['aux_power_units'] }}"/></td>
+    </tr>
+
+    <tr style="font-family: trebuchet ms">
+      <td><label for="hamster_booster">Number of Hamster Boosters:</label></td>
+      <td><input type="text" name="hamster_booster" value="{{ buggy['hamster_booster'] }}"/></td>
     </tr>
 
     <tr style="font-family: trebuchet ms">

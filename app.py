@@ -143,6 +143,16 @@ def create_buggy():
     elif int(aux_power_units) >0:
        msg.append("Please enter more than 1 unit of backup power.")
 
+    hamster_booster = request.form['hamster_booster']
+    hamster_booster = hamster_booster.strip()
+    if not power_type or aux_power_type == "hamster_booster":
+       if int(hamster_booster) >0:
+          msg.append ("You cannot have hamster boosters without selecting a power type as 'hamster'")
+       if not hamster_booster.isdigit():
+          msg.append ("You cannot have hamster boosters without selecting a power type as 'hamster'")
+    elif not hamster_booster.isdigit():
+       msg.append(f"This is not a valid unit of hamster boosters: {hamster_booster}")
+
     armour = request.form['armour']
     armour = armour.strip()
     armour = armour.lower()
@@ -233,37 +243,39 @@ def show_buggies():
   #return render_template("buggy.html", total_cost = total)
 
 import csv
-with open ('costs.csv','w') as csvfile:
-   filewriter = csv.writer(csvfile, delimiter=',',
-                           quotechar='|', quoting=csv.QUOTE_MINIMAL)
-   filewriter.writerow(['json', 'cost'])
-   filewriter.writerow(['petrol', '4'])
-   filewriter.writerow(['fusion', '400'])
-   filewriter.writerow(['steam', '3'])
-   filewriter.writerow(['bio', '5'])
-   filewriter.writerow(['electric', '20'])
-   filewriter.writerow(['rocket', '16'])
-   filewriter.writerow(['hamster', '3'])
-   filewriter.writerow(['thermo', '300'])
-   filewriter.writerow(['solar', '40'])
-   filewriter.writerow(['wind', '20'])
-   filewriter.writerow(['knobbly', '15'])
-   filewriter.writerow(['slick', '10'])
-   filewriter.writerow(['steelband', '20'])
-   filewriter.writerow(['reactive', '40'])
-   filewriter.writerow(['maglev', '50'])
-   filewriter.writerow(['none', '0'])
-   filewriter.writerow(['wood', '40'])
-   filewriter.writerow(['aluminium', '200'])
-   filewriter.writerow(['thinsteel', '100'])
-   filewriter.writerow(['thicksteel', '200'])
-   filewriter.writerow(['titanium', '290'])
-   filewriter.writerow(['spike', '5'])
-   filewriter.writerow(['flame', '20'])
-   filewriter.writerow(['charge', '28'])
-   filewriter.writerow(['biohazard', '30'])
+#with open ('costs.csv','w') as csvfile:
+   #filewriter = csv.writer(csvfile, delimiter=',',
+                           #quotechar='|', quoting=csv.QUOTE_MINIMAL)
+   #filewriter.writerow(['json', 'cost'])
+   #filewriter.writerow(['petrol', '4'])
+   #filewriter.writerow(['fusion', '400'])
+   #filewriter.writerow(['steam', '3'])
+   #filewriter.writerow(['bio', '5'])
+   #filewriter.writerow(['electric', '20'])
+   #filewriter.writerow(['rocket', '16'])
+   #filewriter.writerow(['hamster', '3'])
+   #filewriter.writerow(['thermo', '300'])
+   #filewriter.writerow(['solar', '40'])
+   #filewriter.writerow(['wind', '20'])
+   #filewriter.writerow(['knobbly', '15'])
+   #filewriter.writerow(['slick', '10'])
+   #filewriter.writerow(['steelband', '20'])
+   #filewriter.writerow(['reactive', '40'])
+   #filewriter.writerow(['maglev', '50'])
+   #filewriter.writerow(['none', '0'])
+   #filewriter.writerow(['wood', '40'])
+   #filewriter.writerow(['aluminium', '200'])
+   #filewriter.writerow(['thinsteel', '100'])
+   #filewriter.writerow(['thicksteel', '200'])
+   #filewriter.writerow(['titanium', '290'])
+   #filewriter.writerow(['spike', '5'])
+   #filewriter.writerow(['flame', '20'])
+   #filewriter.writerow(['charge', '28'])
+   #filewriter.writerow(['biohazard', '30'])
+##with open ('costs.csv') as csvfile:
+##   reader = csv.DictReader(csvfile)
 
-  
+ 
 
 
 #------------------------------------------------------------
