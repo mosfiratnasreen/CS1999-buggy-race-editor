@@ -39,10 +39,6 @@ con.execute("""
     armour                VARCHAR (20) DEFAULT "none",
     attack                VARCHAR (20) DEFAULT "none",
     qty_attacks           INTEGER DEFAULT 0,
-    fireproof             BOOLEAN DEFAULT "false",
-    insulated             BOOLEAN DEFAULT "false",
-    antibiotic            BOOLEAN DEFAULT "false",
-    banging               BOOLEAN DEFAULT "false",
     algo                  VARCHAR (20) DEFAULT "steady",
     total_cost            INTEGER
   )
