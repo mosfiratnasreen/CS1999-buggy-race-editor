@@ -270,17 +270,50 @@ def show_buggies():
   record = cur.fetchone(); 
   return render_template("buggy.html", buggy = record)
 
-def total_cost():
-  con = sql.connect(DATABASE_FILE)
-  con.row_factory = sql.Row
-  cur = con.cursor()
-  cur.execute("SELECT * FROM buggies")
-  record = cur.fetchone();
-  for value in buggies:
-     total = total + value
-     print (total)
-  return render_template("buggy.html", total_cost = total)
+#def total_cost():
+  #con = sql.connect(DATABASE_FILE)
+  #con.row_factory = sql.Row
+  #cur = con.cursor()
+  #cur.execute("SELECT * FROM buggies")
+  #record = cur.fetchone();
+  #for value in buggies:
+     #total = total + value
+     #print (total)
+  #return render_template("buggy.html", total_cost = total)
+
+import csv
+with open ('costs.csv','w') as csvfile:
+   filewriter = csv.writer(csvfile, delimiter=',',
+                           quotechar='|', quoting=csv.QUOTE_MINIMAL)
+   filewriter.writerow(['json', 'cost'])
+   filewriter.writerow(['petrol', '4'])
+   filewriter.writerow(['fusion', '400'])
+   filewriter.writerow(['steam', '3'])
+   filewriter.writerow(['bio', '5'])
+   filewriter.writerow(['electric', '20'])
+   filewriter.writerow(['rocket', '16'])
+   filewriter.writerow(['hamster', '3'])
+   filewriter.writerow(['thermo', '300'])
+   filewriter.writerow(['solar', '40'])
+   filewriter.writerow(['wind', '20'])
+   filewriter.writerow(['knobbly', '15'])
+   filewriter.writerow(['slick', '10'])
+   filewriter.writerow(['steelband', '20'])
+   filewriter.writerow(['reactive', '40'])
+   filewriter.writerow(['maglev', '50'])
+   filewriter.writerow(['none', '0'])
+   filewriter.writerow(['wood', '40'])
+   filewriter.writerow(['aluminium', '200'])
+   filewriter.writerow(['thinsteel', '100'])
+   filewriter.writerow(['thicksteel', '200'])
+   filewriter.writerow(['titanium', '290'])
+   filewriter.writerow(['spike', '5'])
+   filewriter.writerow(['flame', '20'])
+   filewriter.writerow(['charge', '28'])
+   filewriter.writerow(['biohazard', '30'])
+
   
+
 
 #------------------------------------------------------------
 # a page for displaying the buggy
