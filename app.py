@@ -236,7 +236,7 @@ def create_buggy():
           msg.append("As you have selected no backup type of power, you cannot have more than 0 units of backup power. Please change this back to 0")
     elif not aux_power_units.isdigit():
        msg.append(f"This is not a valid unit of backup power: {aux_power_units}")
-    elif int(aux_power_units) >0:
+    elif not int(aux_power_units) >0:
        msg.append("Please enter more than 1 unit of backup power.")
 
     auxpowercost = int(request.form['aux_power_units']) * (auxpowertypecost)
