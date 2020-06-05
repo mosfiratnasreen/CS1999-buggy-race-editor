@@ -15,6 +15,21 @@ def check_color(color):
    except ValueError:
       return False
 
+powercosts:{
+   "petrol":4,"fusion":400,"steam":3,"bio":5,"electric":20,"rocket":16,"hamster":3,"thermo":300,"solar":40,"wind":20
+   }
+tyrecosts:{
+   "knobbly":15,"slick":10,"steelband":20,"reactive":40,"maglev":50
+   }
+##increased by 10% per tyre >4
+armourcosts:{
+   "none":0,"wood":40,"aluminium":200,"thinsteel":100,"thicksteel":200,"titanium":290
+   }
+attackcosts:{
+   "none":0,"spike":5,"flame":20,"charge":28,"biohazard":30
+   }
+
+   
 
 #------------------------------------------------------------
 # the index page
@@ -59,7 +74,7 @@ def create_buggy():
     elif not tyres in tyretypes:
        msg.append (f"This is not a valid type of tyre: {tyres}")
        msg.append("Please enter any of the following tyre types: knobbly, slick, steelband, reactive or maglev")
-       
+  
     qty_tyres = request.form['qty_tyres']
     qty_tyres = qty_tyres.strip()
     if tyres == "":
@@ -68,6 +83,9 @@ def create_buggy():
        msg.append(f"This is not a valid number of tyres: {tyres}")
     elif not int(qty_tyres) >= int(qty_wheels):
        msg.append(f"Please enter more than {qty_wheels} tyres")
+
+    tyrecost = int(request.form['qty_tyres']) * 5
+##    * (tyrecosts.get(request.form['tyres']))
        
     flag_color = request.form['flag_color']
     flag_color = flag_color.strip()
@@ -203,13 +221,13 @@ def create_buggy():
     cur.execute("SELECT * FROM buggies")
     record = cur.fetchone();
        
-    if len(msg)>0:
-       return render_template("buggy-form.html", list_of_msg=msg, buggy=record)
+    if len(msg)>=0:
+       return render_template("buggy-form.html", list_of_msg=msg, buggy=record, total_cost=tyrecost)
     try:
       with sql.connect(DATABASE_FILE) as con:
         cur = con.cursor()
-        cur.execute("UPDATE buggies set qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, armour=?, attack=?, qty_attacks=?, algo=? WHERE id=?",
-                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, armour, attack, qty_attacks, algo, DEFAULT_BUGGY_ID))
+        cur.execute("UPDATE buggies set qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, armour=?, attack=?, qty_attacks=?, algo=?, total_cost=? WHERE id=?",
+                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, armour, attack, qty_attacks, algo, total_cost, DEFAULT_BUGGY_ID))
         con.commit()
         msg = "Record successfully saved"
     except:
@@ -231,7 +249,14 @@ def show_buggies():
   record = cur.fetchone(); 
   return render_template("buggy.html", buggy = record)
 
-
+##def total_cost():
+##   con = sql.connect(DATABASE_FILE)
+##   con.row_factory = sql.Row
+##   cur = con.cursor()
+##   cur.execute("SELECT * FROM buggies")
+##   record = cur.fetchone(); 
+##   tyrecost = (int(request.form['qty_tyres'])) * (tyrecosts.get(request.form['tyres']))
+##   return render_template("buggy.html", total_cost=tyrecost)
 #def total_cost():
   #con = sql.connect(DATABASE_FILE)
   #con.row_factory = sql.Row
@@ -243,7 +268,7 @@ def show_buggies():
      #print (total)
   #return render_template("buggy.html", total_cost = total)
 
-import csv
+#import csv
 #with open ('costs.csv','w') as csvfile:
    #filewriter = csv.writer(csvfile, delimiter=',',
                            #quotechar='|', quoting=csv.QUOTE_MINIMAL)
@@ -275,10 +300,6 @@ import csv
    #filewriter.writerow(['biohazard', '30'])
 ##with open ('costs.csv') as csvfile:
 ##   reader = csv.DictReader(csvfile)
-costs = {}
-   
- 
-
 
 #------------------------------------------------------------
 # a page for displaying the buggy
