@@ -55,6 +55,9 @@ def create_buggy():
   elif request.method == 'POST': 
 
     msg=[]
+    tyrecosts:{
+       "knobbly":15,"slick":10,"steelband":20,"reactive":40,"maglev":50
+       }
     
     qty_wheels = request.form['qty_wheels']
     qty_wheels = qty_wheels.strip()
@@ -74,7 +77,14 @@ def create_buggy():
     elif not tyres in tyretypes:
        msg.append (f"This is not a valid type of tyre: {tyres}")
        msg.append("Please enter any of the following tyre types: knobbly, slick, steelband, reactive or maglev")
-  
+
+    #global tyretypecost
+    #if tyres == "knobbly":
+       #tyretypecost = 15
+    #elif tyres == "slick":
+       #tyretypecost = 10
+    
+
     qty_tyres = request.form['qty_tyres']
     qty_tyres = qty_tyres.strip()
     if tyres == "":
@@ -84,7 +94,7 @@ def create_buggy():
     elif not int(qty_tyres) >= int(qty_wheels):
        msg.append(f"Please enter more than {qty_wheels} tyres")
 
-    tyrecost = int(request.form['qty_tyres']) * 5
+    #tyrecost = int(request.form['qty_tyres']) * (tyretypecost)
 ##    * (tyrecosts.get(request.form['tyres']))
        
     flag_color = request.form['flag_color']
@@ -221,13 +231,13 @@ def create_buggy():
     cur.execute("SELECT * FROM buggies")
     record = cur.fetchone();
        
-    if len(msg)>=0:
-       return render_template("buggy-form.html", list_of_msg=msg, buggy=record, total_cost=tyrecost)
+    if len(msg)>0:
+       return render_template("buggy-form.html", list_of_msg=msg, buggy=record)
     try:
       with sql.connect(DATABASE_FILE) as con:
         cur = con.cursor()
-        cur.execute("UPDATE buggies set qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, armour=?, attack=?, qty_attacks=?, algo=?, total_cost=? WHERE id=?",
-                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, armour, attack, qty_attacks, algo, total_cost, DEFAULT_BUGGY_ID))
+        cur.execute("UPDATE buggies set qty_wheels=?, tyres=?, qty_tyres=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, armour=?, attack=?, qty_attacks=?, algo=? WHERE id=?",
+                    (qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, armour, attack, qty_attacks, algo, DEFAULT_BUGGY_ID))
         con.commit()
         msg = "Record successfully saved"
     except:
