@@ -208,8 +208,8 @@ def create_buggy():
     try:
       with sql.connect(DATABASE_FILE) as con:
         cur = con.cursor()
-        cur.execute("UPDATE buggies set qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, armour=?, attack=?, qty_attacks=?, fireproof=?, insulated=?, antibiotic=?, banging=?, algo=?  WHERE id=?",
-                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type, aux_power_units, armour, attack, qty_attacks, fireproof, insulated, antibiotic, banging, algo, DEFAULT_BUGGY_ID))
+        cur.execute("UPDATE buggies set qty_wheels=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, armour=?, attack=?, qty_attacks=?, algo=? WHERE id=?",
+                    (qty_wheels, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, armour, attack, qty_attacks, algo, DEFAULT_BUGGY_ID))
         con.commit()
         msg = "Record successfully saved"
     except:
@@ -230,6 +230,7 @@ def show_buggies():
   cur.execute("SELECT * FROM buggies")
   record = cur.fetchone(); 
   return render_template("buggy.html", buggy = record)
+
 
 #def total_cost():
   #con = sql.connect(DATABASE_FILE)
@@ -274,7 +275,8 @@ import csv
    #filewriter.writerow(['biohazard', '30'])
 ##with open ('costs.csv') as csvfile:
 ##   reader = csv.DictReader(csvfile)
-
+costs = {}
+   
  
 
 
