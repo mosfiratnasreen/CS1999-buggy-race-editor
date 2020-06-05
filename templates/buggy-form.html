@@ -26,12 +26,12 @@
     </tr>
 
     <tr style="font-family: trebuchet ms">
-      <td><label for="qty_wheels">Type of Tyres:</label></td>
+      <td><label for="tyres">Type of Tyres:</label></td>
       <td><input type="text" name="tyres" value="{{ buggy['tyres'] }}" /></td>
     </tr>
 
     <tr style="font-family: trebuchet ms">
-      <td><label for="qty_wheels">Number of Tyres:</label></td>
+      <td><label for="qty_tyres">Number of Tyres:</label></td>
       <td><input type="text" name="qty_tyres" value="{{ buggy['qty_tyres'] }}" /></td>
     </tr>
 
@@ -96,11 +96,6 @@
     </tr>
 
     </table>
-
-    <table class="center" style="font-family: trebuchet ms">
-    <tr>
-      <td>Cost of Buggy:</td> <td>{{total_cost}}</td>
-  </table>
 
     <input type="submit" class="button" style="font-family: trebuchet ms">
   </form>

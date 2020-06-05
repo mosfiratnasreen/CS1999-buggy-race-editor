@@ -94,7 +94,7 @@ def create_buggy():
     elif not int(qty_tyres) >= int(qty_wheels):
        msg.append(f"Please enter more than {qty_wheels} tyres")
 
-    tyrecost = int(request.form['qty_tyres']) * (tyretypecost)
+    tyrecost = int(request.form['qty_tyres']) * 50
 ##    * (tyrecosts.get(request.form['tyres']))
        
     flag_color = request.form['flag_color']
@@ -231,8 +231,8 @@ def create_buggy():
     cur.execute("SELECT * FROM buggies")
     record = cur.fetchone();
        
-    if len(msg)>=0:
-       return render_template("buggy-form.html", list_of_msg=msg, buggy=record, total_cost=tyrecost)
+    if len(msg)>0:
+       return render_template("buggy-form.html", list_of_msg=msg, buggy=record)
     try:
       with sql.connect(DATABASE_FILE) as con:
         cur = con.cursor()
