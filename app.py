@@ -15,22 +15,6 @@ def check_color(color):
    except ValueError:
       return False
 
-powercosts:{
-   "petrol":4,"fusion":400,"steam":3,"bio":5,"electric":20,"rocket":16,"hamster":3,"thermo":300,"solar":40,"wind":20
-   }
-tyrecosts:{
-   "knobbly":15,"slick":10,"steelband":20,"reactive":40,"maglev":50
-   }
-##increased by 10% per tyre >4
-armourcosts:{
-   "none":0,"wood":40,"aluminium":200,"thinsteel":100,"thicksteel":200,"titanium":290
-   }
-attackcosts:{
-   "none":0,"spike":5,"flame":20,"charge":28,"biohazard":30
-   }
-
-   
-
 #------------------------------------------------------------
 # the index page
 #------------------------------------------------------------
@@ -66,6 +50,8 @@ def create_buggy():
        msg.append(f"This is not a valid number of wheels: {qty_wheels}")
     elif not int(qty_wheels) >= 4:
        msg.append("Please enter more than 4 wheels")
+    elif not (int(qty_wheels) % 2) == 0:
+       msg.append("The number of wheels needs to be even")
 
     tyres = request.form['tyres']
     tyres = tyres.strip()
