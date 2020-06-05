@@ -55,9 +55,8 @@ def create_buggy():
   elif request.method == 'POST': 
 
     msg=[]
-    tyrecosts:{
-       "knobbly":15,"slick":10,"steelband":20,"reactive":40,"maglev":50
-       }
+    global cost
+    cost = 0
     
     qty_wheels = request.form['qty_wheels']
     qty_wheels = qty_wheels.strip()
@@ -78,11 +77,20 @@ def create_buggy():
        msg.append (f"This is not a valid type of tyre: {tyres}")
        msg.append("Please enter any of the following tyre types: knobbly, slick, steelband, reactive or maglev")
 
+    tyrecosts:{
+       "knobbly":15,"slick":10,"steelband":20,"reactive":40,"maglev":50
+       }
     global tyretypecost
     if tyres == "knobbly":
        tyretypecost = 15
     if tyres == "slick":
        tyretypecost = 10
+    if tyres == "steelband":
+       tyretypecost = 20
+    if tyres == "reactive":
+       tyretypecost = 40
+    if tyres == "maglev":
+       tyretypecost = 50
     
 
     qty_tyres = request.form['qty_tyres']
@@ -94,7 +102,14 @@ def create_buggy():
     elif not int(qty_tyres) >= int(qty_wheels):
        msg.append(f"Please enter more than {qty_wheels} tyres")
 
-    tyrecost = int(request.form['qty_tyres']) * 50
+    tyrecost = int(request.form['qty_tyres']) * (tyretypecost)
+    if int(qty_tyres)>4:
+       rem = int(qty_wheels) - 4
+       for tyre in range(rem):
+          ten = tyretypecost * 0.1
+          tyrecost = tyrecost + ten
+                
+    cost = cost + tyrecost
 ##    * (tyrecosts.get(request.form['tyres']))
        
     flag_color = request.form['flag_color']
@@ -123,6 +138,10 @@ def create_buggy():
        msg.append(f"This is not a valid flag pattern: {flag_pattern}")
        msg.append("Please enter any of the following patterns: plain, vstripe, hstripe, dstripe, checker or spot")
 
+    powercosts:{
+       "petrol":4,"fusion":400,"steam":3,"bio":5,"electric":20,"rocket":16,"hamster":3,"thermo":300,"solar":40,"wind":20
+       }
+    
     power_type = request.form['power_type']
     power_type = power_type.strip()
     power_type = power_type.lower()
@@ -133,6 +152,28 @@ def create_buggy():
        msg.append(f"This is not a valid type of power: {power_type}")
        msg.append("Please enter any of the following types of power: petrol, fusion, steam, bio, electric, rocket, hamster, thermo, solar or wind")
 
+    global powertypecost
+    if power_type == "petrol":
+       powertypecost = 4
+    if power_type == "fusion":
+       powertypecost = 400
+    if power_type == "steam":
+       powertypecost = 3
+    if power_type == "bio":
+       powertypecost = 5
+    if power_type == "electric":
+       powertypecost = 20
+    if power_type == "rocket":
+       powertypecost = 16
+    if power_type == "hamster":
+       powertypecost = 3
+    if power_type == "thermo":
+       powertypecost = 300
+    if power_type == "solar":
+       powertypecost = 40
+    if power_type == "wind":
+       powertypecost = 20
+
     power_units = request.form['power_units']
     power_units = power_units.strip()
     if power_units == "":
@@ -141,6 +182,9 @@ def create_buggy():
        msg.append(f"This is not a valid unit of power: {power_units}")
     elif not int(power_units) >= 1:
        msg.append("Please enter more than 1 unit.")
+
+    powercost = int(request.form['power_units']) * (powertypecost)
+    cost = cost + powercost
 
     nonconsumable = ["fusion","thermo","solar"]
     if power_type in nonconsumable:
@@ -155,6 +199,30 @@ def create_buggy():
        msg.append("If you would like a backup type of power, please enter any of the following types of power: petrol, fusion, steam, bio, electric, rocket, hamster, thermo, solar or wind")
     elif aux_power_type == "none":
        pass
+
+    global auxpowertypecost
+    if aux_power_type == "petrol":
+       auxpowertypecost = 4
+    if aux_power_type == "fusion":
+       auxpowertypecost = 400
+    if aux_power_type == "steam":
+       auxpowertypecost = 3
+    if aux_power_type == "bio":
+       auxpowertypecost = 5
+    if aux_power_type == "electric":
+       auxpowertypecost = 20
+    if aux_power_type == "rocket":
+       auxpowertypecost = 16
+    if aux_power_type == "hamster":
+       auxpowertypecost = 3
+    if aux_power_type == "thermo":
+       auxpowertypecost = 300
+    if aux_power_type == "solar":
+       auxpowertypecost = 40
+    if aux_power_type == "wind":
+       auxpowertypecost = 20
+    if aux_power_type == "none":
+       auxpowertypecost = 0
 
     aux_power_units = request.form['aux_power_units']
     aux_power_units = aux_power_units.strip()
@@ -171,6 +239,9 @@ def create_buggy():
     elif int(aux_power_units) >0:
        msg.append("Please enter more than 1 unit of backup power.")
 
+    auxpowercost = int(request.form['aux_power_units']) * (auxpowertypecost)
+    cost = cost + auxpowercost
+
     hamster_booster = request.form['hamster_booster']
     hamster_booster = hamster_booster.strip()
     if not power_type or aux_power_type == "hamster_booster":
@@ -180,6 +251,10 @@ def create_buggy():
           msg.append ("You cannot have hamster boosters without selecting a power type as 'hamster'")
     elif not hamster_booster.isdigit():
        msg.append(f"This is not a valid unit of hamster boosters: {hamster_booster}")
+
+    hamsterpowercost = 3
+    hamstercost = int(request.form['hamster_booster']) * hamsterpowercost
+    cost = cost + hamstercost
 
     armour = request.form['armour']
     armour = armour.strip()
@@ -191,7 +266,27 @@ def create_buggy():
     elif not armour in armourtypes:
        msg.append(f"This is not a valid type of armour: {armour}")
        msg.append("Please enter any of the following types of armour: none, wood, aluminium, thinsteel, thicksteel or titanium")
+
+    armourcosts:{
+       "none":0,"wood":40,"aluminium":200,"thinsteel":100,"thicksteel":200,"titanium":290
+       }
+    
+    global armourtypecost
+    if armour == "none":
+       armourtypecost = 0
+    if armour == "wood":
+       armourtypecost = 40
+    if armour == "aluminium":
+       armourtypecost = 200
+    if armour == "thinsteel":
+       armourtypecost = 100
+    if armour == "thicksteel":
+       armourtypecost = 200
+    if armour == "titanium":
+       armourtypecost = 290
        
+    cost = cost + armourtypecost
+
     attack = request.form['attack']
     attack = attack.strip()
     attack = attack.lower()
@@ -202,6 +297,22 @@ def create_buggy():
     elif not attack in attacktypes:
        msg.append(f"This is not a valid method of attack: {attack}")
        msg.append("Please enter any of the following attack methods: none, spike, flame, charge, biohazard")
+
+    attackcosts:{
+       "none":0,"spike":5,"flame":20,"charge":28,"biohazard":30
+       }
+
+    global attacktypecost
+    if attack == "none":
+       attacktypecost = 0
+    if attack == "spike":
+       attacktypecost = 5
+    if attack == "flame":
+       attacktypecost = 20
+    if attack == "charge":
+       attacktypecost = 28
+    if attack == "biohazard":
+       attacktypecost = 30
        
     qty_attacks = request.form['qty_attacks']
     qty_attacks = qty_attacks.strip()
@@ -214,6 +325,9 @@ def create_buggy():
           pass
     elif not int(qty_attacks) >0:
        msg.append("Please enter more than 0 number of attacks.")
+
+    attackcost = int(request.form['qty_attacks']) * (attacktypecost)
+    cost = cost + attackcost
 
     algo = request.form['algo']
     algo = algo.strip()
@@ -233,6 +347,7 @@ def create_buggy():
        
     if len(msg)>0:
        return render_template("buggy-form.html", list_of_msg=msg, buggy=record)
+   
     try:
       with sql.connect(DATABASE_FILE) as con:
         cur = con.cursor()
@@ -245,7 +360,7 @@ def create_buggy():
       msg = "error in update operation"
     finally:
       con.close()
-      return render_template("updated.html", msg = msg)
+      return render_template("updated.html", msg = msg, total_cost=cost)
 
 #------------------------------------------------------------
 # a page for displaying the buggy
