@@ -333,7 +333,7 @@ def create_buggy():
        msg.append(f"This is not a valid method of algorithm: {algo}")
        msg.append("Please enter any of the following algorithms: defensive, steady, offensive, titfortat, random or buggy")
     elif algo == "buggy":
-       msg.append("Buggy algorithm cannot be buggy")
+       msg.append("Buggy algorithm cannot be buggy, as it is not a state you choose but it is what happens whwn the race computer goes wrong")
     
     con = sql.connect(DATABASE_FILE)
     con.row_factory = sql.Row
@@ -425,11 +425,12 @@ def show_buggies():
 ##   reader = csv.DictReader(csvfile)
 
 #------------------------------------------------------------
-# a page for displaying the buggy
+# a page for editing the buggy
 #------------------------------------------------------------
-@app.route('/new')
-def edit_buggy():
-  return render_template("buggy-form.html")
+@app.route('/edit/<buggy_id>')
+def edit_buggy(buggy_id):
+   return "EDIT BUGGY {}".format(buggy_id)
+##  return render_template("buggy-form.html")
 
 
 #------------------------------------------------------------

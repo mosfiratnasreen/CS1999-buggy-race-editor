@@ -70,3 +70,10 @@ table.center{
 li {
     list-style-type: circle;
 }
+select {
+        width: 100px;
+        height: 100px
+        margin: 20px;
+        font-size: 1.2em;
+        font-family: trebuchet ms;
+    }
