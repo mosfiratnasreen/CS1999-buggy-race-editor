@@ -81,10 +81,10 @@ def create_buggy():
 
     qty_tyres = request.form['qty_tyres']
     qty_tyres = qty_tyres.strip()
-    if tyres == "":
+    if qty_tyres == "":
        msg.append("Please enter a number for quantity of tyres including spares.")
     elif not qty_tyres.isdigit():
-       msg.append(f"This is not a valid number of tyres: {tyres}")
+       msg.append(f"This is not a valid number of tyres: {qty_tyres}")
     elif not int(qty_tyres) >= int(qty_wheels):
        msg.append(f"Please enter more than {qty_wheels} tyres")
 
