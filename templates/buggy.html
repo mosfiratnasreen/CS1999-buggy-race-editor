@@ -4,6 +4,7 @@
 
   <h1>Buggy</h1>
 
+{% for buggy in buggies %}
   <table class="center" style="font-family: trebuchet ms">
    <tr>
      <td>ID:</td> <td> {{ buggy['id'] }} </td>
@@ -54,7 +55,7 @@
      <td>Race Algorithm:</td> <td> {{ buggy['algo'] }} </td>
     </tr>
   </table>
-
+{% endfor %}
   <p>
     <a href="/" class="button">Home</a>
   </p>
