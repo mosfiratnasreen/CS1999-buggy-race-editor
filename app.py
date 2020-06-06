@@ -124,6 +124,11 @@ def create_buggy():
        msg.append(f"This is not a valid flag pattern: {flag_pattern}")
        msg.append("Please enter any of the following patterns: plain, vstripe, hstripe, dstripe, checker or spot")
 
+    if flag_color_secondary == request.form['flag_color']:
+       if not flag_pattern == "plain":
+          msg.append("The secondary colour cannot be the same as the primary flag colour. Please change it accordingly")
+          
+       
     powercosts:{
        "petrol":4,"fusion":400,"steam":3,"bio":5,"electric":20,"rocket":16,"hamster":3,"thermo":300,"solar":40,"wind":20
        }
@@ -183,8 +188,6 @@ def create_buggy():
     if not aux_power_type in powertypes:
        msg.append(f"This is not a valid backup type of power: {aux_power_type}")
        msg.append("If you would like a backup type of power, please enter any of the following types of power: petrol, fusion, steam, bio, electric, rocket, hamster, thermo, solar or wind")
-    elif aux_power_type == "none":
-       pass
 
     global auxpowertypecost
     if aux_power_type == "petrol":
@@ -230,15 +233,20 @@ def create_buggy():
 
     hamster_booster = request.form['hamster_booster']
     hamster_booster = hamster_booster.strip()
-    if not power_type or aux_power_type == "hamster_booster":
+    if not power_type == "hamster":
        if int(hamster_booster) >0:
-          msg.append ("You cannot have hamster boosters without selecting a power type as 'hamster'")
+          msg.append ("You cannot have hamster boosters without selecting a power type or backup power type as 'hamster'")
        if not hamster_booster.isdigit():
-          msg.append ("You cannot have hamster boosters without selecting a power type as 'hamster'")
-    elif not hamster_booster.isdigit():
+          msg.append ("You cannot have hamster boosters without selecting a power type or backup power type as 'hamster'")
+    if not aux_power_type == "hamster":
+       if int(hamster_booster) >0:
+          msg.append ("You cannot have hamster boosters without selecting a power type or backup power type as 'hamster'")
+       if not hamster_booster.isdigit():
+          msg.append ("You cannot have hamster boosters without selecting a power type or backup power type as 'hamster'")
+    if not hamster_booster.isdigit():
        msg.append(f"This is not a valid unit of hamster boosters: {hamster_booster}")
 
-    hamsterpowercost = 3
+    hamsterpowercost = 5
     hamstercost = int(request.form['hamster_booster']) * hamsterpowercost
     cost = cost + hamstercost
 
@@ -324,6 +332,8 @@ def create_buggy():
     elif not algo in algotypes:
        msg.append(f"This is not a valid method of algorithm: {algo}")
        msg.append("Please enter any of the following algorithms: defensive, steady, offensive, titfortat, random or buggy")
+    elif algo == "buggy":
+       msg.append("Buggy algorithm cannot be buggy")
     
     con = sql.connect(DATABASE_FILE)
     con.row_factory = sql.Row
