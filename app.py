@@ -288,11 +288,11 @@ def create_buggy():
     attack = attack.lower()
     attacktypes = ["none","spike","flame","charge","biohazard"]
     if attack == "":
-       msg.append("Please enter any of the following attack methods: none, spike, flame, charge, biohazard")
+       msg.append("Please enter any of the following attack methods: none, spike, flame, charge or biohazard")
        msg.append("If you would not like an attack method please type in: none")
     elif not attack in attacktypes:
        msg.append(f"This is not a valid method of attack: {attack}")
-       msg.append("Please enter any of the following attack methods: none, spike, flame, charge, biohazard")
+       msg.append("Please enter any of the following attack methods: none, spike, flame, charge or biohazard")
 
     attackcosts:{
        "none":0,"spike":5,"flame":20,"charge":28,"biohazard":30
@@ -335,7 +335,7 @@ def create_buggy():
        msg.append(f"This is not a valid method of algorithm: {algo}")
        msg.append("Please enter any of the following algorithms: defensive, steady, offensive, titfortat, random or buggy")
     elif algo == "buggy":
-       msg.append("Buggy algorithm cannot be buggy, as it is not a state you choose but it is what happens whwn the race computer goes wrong")
+       msg.append("Race algorithm cannot be buggy, as it is not a state you choose but it is what happens whwn the race computer goes wrong")
     
     con = sql.connect(DATABASE_FILE)
     con.row_factory = sql.Row
