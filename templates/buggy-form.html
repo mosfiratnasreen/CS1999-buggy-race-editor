@@ -4,8 +4,14 @@
 
 {% block content %}
 
-  <h1 style="font-family: trebuchet ms">Make Buggy</h1>
-  <p style="font-family: trebuchet ms">Default values will be initially pre-entered into the form until successfully changed otherwise</p>  
+  <h1 style="font-family: trebuchet ms">
+    {% if buggy %}
+      Edit Buggy
+    {% else %}
+      Make Buggy
+    {% endif %}
+  </h1>
+
   <p style="font-family: trebuchet ms">The cost of the buggy will be displayed after the buggy is submitted</p> 
 
   <h2>Options List </h2>
@@ -29,7 +35,7 @@
 <p>
   <div class="message" style="font-family: trebuchet ms">
     {% for message in list_of_msg %}
-      <li>{{ message }}</li>
+      <li style="color: red">{{ message }}</li>
     {% endfor %}
   </div>
 </p>
@@ -38,7 +44,7 @@
 
 <p>
   <label for="id">ID:</label></td>
-  <input type="text" name="id" value="{{ buggy['id'] }}"/>
+  <input type="hidden" name="id" value="{{ buggy['id'] }}"/>
 </p>
 
 
