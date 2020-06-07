@@ -466,8 +466,8 @@ def summary():
 #   there always being a record to update (because the
 #   student needs to change that!)
 #------------------------------------------------------------
-@app.route('/delete', methods = ['POST'])
-def delete_buggy():
+@app.route('/delete/<buggy_id>', methods = ['POST','GET'])
+def delete_buggy(buggy_id):
   try:
     msg = "deleting buggy"
     with sql.connect(DATABASE_FILE) as con:
