@@ -19,6 +19,12 @@
 
   <form action="/new" method="post">
 
+<p>
+  <label for="id">ID:</label></td>
+  <input type="text" name="id" value="{{ buggy['id'] }}"/>
+</p>
+
+
   <table class="center">
     <tr style="font-family: trebuchet ms">
       <td><label for="qty_wheels">Number of Wheels:</label></td>
@@ -102,5 +108,5 @@
   <p>
     <a href="/" class="button">Home</a>
    </p>
-   <img src="static/buggy.png">
+   <img src="/static/buggy.png">
 {% endblock %}

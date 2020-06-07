@@ -41,6 +41,8 @@ def create_buggy():
     msg=[]
     global cost
     cost = 0
+
+    buggy_id = request.form['id']
     
     qty_wheels = request.form['qty_wheels']
     qty_wheels = qty_wheels.strip()
@@ -347,9 +349,11 @@ def create_buggy():
     try:
       with sql.connect(DATABASE_FILE) as con:
         cur = con.cursor()
-##        cur.execute("UPDATE buggies set qty_wheels=?, tyres=?, qty_tyres=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, armour=?, attack=?, qty_attacks=?, algo=? WHERE id=?",
-##                    (qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, armour, attack, qty_attacks, algo, DEFAULT_BUGGY_ID))
-        cur.execute("INSERT INTO buggies (qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, armour, attack, qty_attacks, algo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        if buggy_id.isdigit():
+           cur.execute("UPDATE buggies set qty_wheels=?, tyres=?, qty_tyres=?, flag_color=?, flag_color_secondary=?, flag_pattern=?, power_type=?, power_units=?, aux_power_type=?, aux_power_units=?, hamster_booster=?, armour=?, attack=?, qty_attacks=?, algo=? WHERE id=?",
+                       (qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, armour, attack, qty_attacks, algo, buggy_id))
+        else:
+            cur.execute("INSERT INTO buggies (qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, armour, attack, qty_attacks, algo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     (qty_wheels, tyres, qty_tyres, flag_color, flag_color_secondary, flag_pattern, power_type, power_units, aux_power_type, aux_power_units, hamster_booster, armour, attack, qty_attacks, algo, ))
         con.commit()
         msg = "Record successfully saved"
@@ -429,8 +433,12 @@ def show_buggies():
 #------------------------------------------------------------
 @app.route('/edit/<buggy_id>')
 def edit_buggy(buggy_id):
-   return "EDIT BUGGY {}".format(buggy_id)
-##  return render_template("buggy-form.html")
+   con = sql.connect(DATABASE_FILE)
+   con.row_factory = sql.Row
+   cur = con.cursor()
+   cur.execute("SELECT * FROM buggies WHERE id=?", (buggy_id,))
+   record = cur.fetchone(); 
+   return render_template("buggy-form.html", buggy=record)
 
 
 #------------------------------------------------------------
