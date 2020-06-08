@@ -2,6 +2,21 @@
 
 {% block content %}
 
+ {% for buggy in buggies %}
+ <style type="text/css">
+    .vstripe {
+        color: black;
+        background: repeating-linear-gradient(
+            90deg,
+            {{ buggy['flag_color'] }},
+            {{ buggy['flag_color'] }} 10px,
+            {{ buggy['flag_color_secondary']}} 10px,
+            {{ buggy['flag_color_secondary']}} 20px
+            );
+    }  
+ </style>
+ {% endfor %}
+
   <h1>Buggy</h1>
 
 {% for buggy in buggies %}
@@ -60,6 +75,21 @@
     <tr>
         <td colspan="2"><a href="/delete/{{ buggy['id'] }}"> Delete Buggy</td>
     </tr>
+  </table>
+
+  <table class="center" style="font-family: trebuchet ms">
+    {% if buggy['flag_pattern'] == plain%}
+    <tr>
+        <td span="1" style="width: 45%;">Buggy Flag:</td>
+        <td bgcolor="{{ buggy['flag_color'] }}"></td>
+    </tr>
+    {% endif %}
+    {% if flag_pattern == vstripe%}
+    <tr>
+        <td span="1" style="width: 45%;">Buggy Flag:</td>
+        <td class = "vstripe" bgcolor="{{ buggy['flag_color'] }}"></td>
+    </tr>
+    {% endif %}
   </table>
 {% endfor %}
   <p>

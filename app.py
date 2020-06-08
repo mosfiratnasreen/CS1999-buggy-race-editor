@@ -455,7 +455,7 @@ def summary():
   cur.execute("SELECT * FROM buggies WHERE id=? LIMIT 1", (DEFAULT_BUGGY_ID))
   return jsonify(
       {k: v for k, v in dict(zip(
-        [column[0] for column in cur.description], cur.fetchone())).items()
+        [column[0] for column in cur.description], cur.fetchall())).items()
         if (v != "" and v is not None)
       }
     )
