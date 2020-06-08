@@ -116,6 +116,7 @@ def create_buggy():
     elif not check_color(flag_color_secondary):
        msg.append(f"This is not a valid flag colour: {flag_color_secondary}")
 
+    global flag_pattern
     flag_pattern = request.form['flag_pattern']
     flag_pattern = flag_pattern.strip()
     flag_pattern = flag_pattern.lower()
@@ -376,6 +377,11 @@ def show_buggies():
   records = cur.fetchall(); 
   return render_template("buggy.html", buggies = records)
 
+#def flag():
+   #if flag_pattern == "vstripe":
+      #flagchosen == "vstripe"
+      #return render_template ("buggy.html", chosenflagpattern = flagchosen)
+
 ##def total_cost():
 ##   con = sql.connect(DATABASE_FILE)
 ##   con.row_factory = sql.Row
@@ -472,7 +478,7 @@ def delete_buggy(buggy_id):
     msg = "deleting buggy"
     with sql.connect(DATABASE_FILE) as con:
       cur = con.cursor()
-      cur.execute("DELETE FROM buggies")
+      cur.execute("DELETE FROM buggies where id=?", buggy_id)
       con.commit()
       msg = "Buggy deleted"
   except:
