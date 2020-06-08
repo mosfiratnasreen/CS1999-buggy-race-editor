@@ -4,22 +4,24 @@
 
 <h1>Buggy</h1>
 
-{% for buggy in buggies %}
  <style>
-    .vstripe {
-        background: repeating-linear-gradient(
+  {% for buggy in buggies %}
+  .flag-{{buggy['id']}}{
+    {% if buggy['flag_pattern'] == 'vstripe' %}
+    background: repeating-linear-gradient(
             90deg,
             {{ buggy['flag_color'] }},
             {{ buggy['flag_color'] }} 10px,
             {{ buggy['flag_color_secondary']}} 10px,
             {{ buggy['flag_color_secondary']}} 20px
             );
-    }
-    .plain {
-      background-color: {{ buggy['flag_color'] }};
-    }  
+    {% else %}
+    background-color: {{ buggy['flag_color'] }};
+    {% endif %}
+  }
+  {% endfor %}
+
  </style>
-{% endfor %}
 
 {% for buggy in buggies %}
   <table class="center" style="font-family: trebuchet ms">
@@ -81,17 +83,10 @@
 
 
   <table class="center" style="font-family: trebuchet ms">
-    {% if buggy['flag_pattern'] == "plain" %}
     <tr>
         <td span="1" style="width: 45%;">Buggy Flag:</td>
-        <td class = "plain"></td>
+        <td class = "flag-{{ buggy['id'] }}"></td>
     </tr>
-    {% elif buggy['flag_pattern'] == "vstripe" %}
-    <tr>
-        <td span="1" style="width: 45%;">Buggy Flag:</td>
-        <td class = "vstripe" ></td>
-    </tr>
-    {% endif %}
   </table>
 {% endfor %}
   <p>
