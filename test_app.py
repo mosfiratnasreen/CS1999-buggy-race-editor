@@ -17,7 +17,6 @@ class TestApp(unittest.TestCase):
         tyrecost = 200
         powercost = 20
         auxpowercost = 16
-        hamstercost = 0
         armourcost = 100
         attackcost = 112
         self.assertEqual(app.total_cost(tyrecost,powercost,auxpowercost,hamstercost,armourcost,attackcost), 448)

@@ -239,18 +239,30 @@ def create_buggy():
 
     hamster_booster = request.form['hamster_booster']
     hamster_booster = hamster_booster.strip()
-    if not power_type == "hamster":
+    if power_type == "hamster":
+       pass
+    elif aux_power_type == "hamster":
+       pass
+    elif not power_type == "hamster" or aux_power_type == 'hamster' :
        if int(hamster_booster) >0:
           msg.append ("You cannot have hamster boosters without selecting a power type or backup power type as 'hamster'")
        if not hamster_booster.isdigit():
           msg.append ("You cannot have hamster boosters without selecting a power type or backup power type as 'hamster'")
-    if not aux_power_type == "hamster":
-       if int(hamster_booster) >0:
-          msg.append ("You cannot have hamster boosters without selecting a power type or backup power type as 'hamster'")
-       if not hamster_booster.isdigit():
-          msg.append ("You cannot have hamster boosters without selecting a power type or backup power type as 'hamster'")
-    if not hamster_booster.isdigit():
+##    elif not aux_power_type == "hamster":
+##       if int(hamster_booster) >0:
+##          print ("1")
+##          msg.append ("You cannot have hamster boosters without selecting a power type or backup power type as 'hamster'")
+##       if not hamster_booster.isdigit():
+##          print ("1")
+##          msg.append ("You cannot have hamster boosters without selecting a power type or backup power type as 'hamster'")
+    elif not hamster_booster.isdigit():
        msg.append(f"This is not a valid unit of hamster boosters: {hamster_booster}")
+    #elif power_type == "hamster":
+       #print ("1")
+       #pass
+    #elif aux_power_type == "hamster":
+       #print ("1")
+       #pass
 
     hamsterpowercost = 5
     global hamstercost
@@ -282,7 +294,7 @@ def create_buggy():
     if armour == "thinsteel":
        armourcost = 100
     if armour == "thicksteel":
-       armourcost = 200
+       armoucost = 200
     if armour == "titanium":
        armourcost = 290
        
@@ -354,7 +366,7 @@ def create_buggy():
 
     def total_cost(tyrecost,powercost,auxpowercost,hamstercost,armourcost,attackcost):
        global cost
-       cost = sum(tyrecost,powercost,auxpowercost,hamstercost,armourcost,attackcost)
+       cost = tyrecost + powercost + auxpowercost + hamstercost + armourcost + attackcost
        return cost
 
     total_cost(tyrecost,powercost,auxpowercost,hamstercost,armourcost,attackcost)
