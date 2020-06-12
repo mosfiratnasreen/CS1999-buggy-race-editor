@@ -239,30 +239,36 @@ def create_buggy():
 
     hamster_booster = request.form['hamster_booster']
     hamster_booster = hamster_booster.strip()
+    print ("1")
     if power_type == "hamster":
+       print ("1")
        pass
     elif aux_power_type == "hamster":
+       print ("1")
        pass
-    elif not power_type == "hamster" or aux_power_type == 'hamster' :
+    elif not power_type == "hamster" or aux_power_type == "hamster" :
        if int(hamster_booster) >0:
+          print ("1")
           msg.append ("You cannot have hamster boosters without selecting a power type or backup power type as 'hamster'")
        if not hamster_booster.isdigit():
+          print ("1")
           msg.append ("You cannot have hamster boosters without selecting a power type or backup power type as 'hamster'")
-##    elif not aux_power_type == "hamster":
-##       if int(hamster_booster) >0:
-##          print ("1")
-##          msg.append ("You cannot have hamster boosters without selecting a power type or backup power type as 'hamster'")
-##       if not hamster_booster.isdigit():
-##          print ("1")
-##          msg.append ("You cannot have hamster boosters without selecting a power type or backup power type as 'hamster'")
+    #elif not aux_power_type == "hamster":
+       #if int(hamster_booster) >0:
+          #print ("1")
+          #msg.append ("You cannot have hamster boosters without selecting a power type or backup power type as 'hamster'")
+       #if not hamster_booster.isdigit():
+          #print ("1")
+          #msg.append ("You cannot have hamster boosters without selecting a power type or backup power type as 'hamster'")
     elif not hamster_booster.isdigit():
+       print ("1")
        msg.append(f"This is not a valid unit of hamster boosters: {hamster_booster}")
     #elif power_type == "hamster":
        #print ("1")
        #pass
     #elif aux_power_type == "hamster":
        #print ("1")
-       #pass
+       # pass
 
     hamsterpowercost = 5
     global hamstercost
@@ -369,7 +375,7 @@ def create_buggy():
        cost = tyrecost + powercost + auxpowercost + hamstercost + armourcost + attackcost
        return cost
 
-    total_cost(tyrecost,powercost,auxpowercost,hamstercost,armourcost,attackcost)
+    total_cost(tyrecost,powercost,auxpowercost,hamstercost, armourcost,attackcost)
    
     try:
       with sql.connect(DATABASE_FILE) as con:
