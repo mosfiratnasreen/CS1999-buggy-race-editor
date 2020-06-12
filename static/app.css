@@ -77,3 +77,6 @@ select {
         font-size: 1.2em;
         font-family: trebuchet ms;
     }
+img { 
+  width: 100% 
+}

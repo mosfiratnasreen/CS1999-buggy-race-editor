@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1>Buggy</h1>
+<h1>Buggies</h1>
 
  <style>
   {% for buggy in buggies %}
@@ -103,10 +103,13 @@
      <td>Race Algorithm:</td> <td> {{ buggy['algo'] }} </td>
     </tr>
     <tr>
-        <td colspan="2"><a href="/edit/{{ buggy['id'] }}"> Edit Buggy</td>
+        <td colspan="2"><a href="/edit/{{ buggy['id'] }}">Edit Buggy</td>
     </tr>
     <tr>
-        <td colspan="2"><a href="/delete/{{ buggy['id'] }}"> Delete Buggy</td>
+        <td colspan="2"><a href="/delete/{{ buggy['id'] }}">Delete Buggy</td>
+    </tr>
+    <tr>
+        <td colspan="2"><a href="/json/{{ buggy['id'] }}">Get Buggy JSON</td>
     </tr>
   </table>
 

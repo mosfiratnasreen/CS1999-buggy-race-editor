@@ -90,6 +90,7 @@ def create_buggy():
     elif not int(qty_tyres) >= int(qty_wheels):
        msg.append(f"Please enter more than {qty_wheels} tyres")
 
+    global tyrecost
     tyrecost = int(request.form['qty_tyres']) * (tyretypecost)
     if int(qty_tyres)>4:
        rem = int(qty_wheels) - 4
@@ -97,7 +98,7 @@ def create_buggy():
           ten = tyretypecost * 0.1
           tyrecost = tyrecost + ten
                 
-    cost = cost + tyrecost
+##    cost = cost + tyrecost
 ##    * (tyrecosts.get(request.form['tyres']))
        
     flag_color = request.form['flag_color']
@@ -177,8 +178,9 @@ def create_buggy():
     elif not int(power_units) >= 1:
        msg.append("Please enter more than 1 unit.")
 
+    global powercost
     powercost = int(request.form['power_units']) * (powertypecost)
-    cost = cost + powercost
+##    cost = cost + powercost
 
     nonconsumable = ["fusion","thermo","solar"]
     if power_type in nonconsumable:
@@ -231,8 +233,9 @@ def create_buggy():
     elif not int(aux_power_units) >0:
        msg.append("Please enter more than 1 unit of backup power.")
 
+    global auxpowercost
     auxpowercost = int(request.form['aux_power_units']) * (auxpowertypecost)
-    cost = cost + auxpowercost
+##    cost = cost + auxpowercost
 
     hamster_booster = request.form['hamster_booster']
     hamster_booster = hamster_booster.strip()
@@ -250,8 +253,9 @@ def create_buggy():
        msg.append(f"This is not a valid unit of hamster boosters: {hamster_booster}")
 
     hamsterpowercost = 5
+    global hamstercost
     hamstercost = int(request.form['hamster_booster']) * hamsterpowercost
-    cost = cost + hamstercost
+##    cost = cost + hamstercost
 
     armour = request.form['armour']
     armour = armour.strip()
@@ -268,21 +272,21 @@ def create_buggy():
        "none":0,"wood":40,"aluminium":200,"thinsteel":100,"thicksteel":200,"titanium":290
        }
     
-    global armourtypecost
+    global armourcost
     if armour == "none":
-       armourtypecost = 0
+       armourcost = 0
     if armour == "wood":
-       armourtypecost = 40
+       armourcost = 40
     if armour == "aluminium":
-       armourtypecost = 200
+       armourcost = 200
     if armour == "thinsteel":
-       armourtypecost = 100
+       armourcost = 100
     if armour == "thicksteel":
-       armourtypecost = 200
+       armourcost = 200
     if armour == "titanium":
-       armourtypecost = 290
+       armourcost = 290
        
-    cost = cost + armourtypecost
+##    cost = cost + armourtypecost
 
     attack = request.form['attack']
     attack = attack.strip()
@@ -323,8 +327,9 @@ def create_buggy():
     elif not int(qty_attacks) >0:
        msg.append("Please enter more than 0 number of attacks.")
 
+    global attackcost
     attackcost = int(request.form['qty_attacks']) * (attacktypecost)
-    cost = cost + attackcost
+##    cost = cost + attackcost
 
     algo = request.form['algo']
     algo = algo.strip()
@@ -346,6 +351,13 @@ def create_buggy():
        
     if len(msg)>0:
        return render_template("buggy-form.html", list_of_msg=msg, buggy=record)
+
+    def total_cost(tyrecost,powercost,auxpowercost,hamstercost,armourcost,attackcost):
+       global cost
+       cost = sum(tyrecost,powercost,auxpowercost,hamstercost,armourcost,attackcost)
+       return cost
+
+    total_cost(tyrecost,powercost,auxpowercost,hamstercost,armourcost,attackcost)
    
     try:
       with sql.connect(DATABASE_FILE) as con:
@@ -453,15 +465,15 @@ def edit_buggy(buggy_id):
 #   using it because we'll be dipping diectly into the
 #   database
 #------------------------------------------------------------
-@app.route('/json')
-def summary():
+@app.route('/json/<buggy_id>', methods = ['POST','GET'])
+def summary(buggy_id):
   con = sql.connect(DATABASE_FILE)
   con.row_factory = sql.Row
   cur = con.cursor()
-  cur.execute("SELECT * FROM buggies WHERE id=? LIMIT 1", (DEFAULT_BUGGY_ID))
+  cur.execute("SELECT * FROM buggies WHERE id=? LIMIT 1", buggy_id)
   return jsonify(
       {k: v for k, v in dict(zip(
-        [column[0] for column in cur.description], cur.fetchall())).items()
+        [column[0] for column in cur.description], cur.fetchone())).items()
         if (v != "" and v is not None)
       }
     )
