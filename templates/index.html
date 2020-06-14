@@ -3,12 +3,13 @@
 {% block content %}
 
   <h1 style="font-family: trebuchet ms">
-    My Buggy Editor
+    {{name}}'s Buggy Editor
   </h1>
 
   <div class="spacer" style="font-family: trebuchet ms">
     <a href="/new" class="button">Make buggy</a>
     <a href="/buggy" class="button">Show buggies</a>
+    <a href="{{ url_for('logout') }}" class="button">Log Out</a>
   </div>
 
   <p style="font-family: trebuchet ms">

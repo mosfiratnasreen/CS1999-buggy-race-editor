@@ -1,7 +1,61 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, redirect, render_template, request, jsonify, session, url_for, g
+from flask_bootstrap import Bootstrap
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField, SubmitField, BooleanField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, InputRequired
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3 as sql
 from colour import Color
+
+
+#class User:
+   #def __init__(self, id, username, password):
+      #self.id = id
+      #self.username = username
+      #self.password = password
+   #def __repr__(self):
+      #return f'<User: {self.username}>'
+
+#users=[]
+#users.append(User(id=1, username='Anthony',password='password'))
+
+#print (users)
+
 app = Flask(__name__)
+Bootstrap(app)
+db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+
+class User(UserMixin, db.Model):
+   id = db.Column(db.Integer, primary_key=True)
+   username = db.Column(db.String(15), unique=True)
+   email = db.Column(db.String(50), unique = True)
+   password = db.Column(db.String(80)) 
+   
+@login_manager.user_loader
+def load_user(user_id):
+   return User.query.get(int(user_id))
+
+
+class LoginForm(FlaskForm):
+   username = StringField('Username', validators=[InputRequired(), Length(min=4, max=15)])
+   password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80)])
+   remember = BooleanField('Remember Me')
+
+class RegisterForm(FlaskForm):
+   email = StringField('Email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])
+   username = StringField('Username', validators=[InputRequired(), Length(min=4, max=15)])
+   password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80)])
+
+
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///Users/mosfiratnasreen/CS1999-buggy-race-editor/users.db'
+app.config['SECRET_KEY'] = 'a957e8f6231870fcb5d3e3d83518105a'
 
 DATABASE_FILE = "database.db"
 DEFAULT_BUGGY_ID = "1"
@@ -19,8 +73,58 @@ def check_color(color):
 # the index page
 #------------------------------------------------------------
 @app.route('/')
+@login_required
 def home():
-   return render_template('index.html', server_url=BUGGY_RACE_SERVER_URL)
+   return render_template('index.html', name = current_user.username)
+
+#------------------------------------------------------------
+# the login page
+#------------------------------------------------------------
+@app.route('/login', methods = ['GET','POST'])
+def login():
+   form = LoginForm()
+
+   if form.validate_on_submit():
+      user = User.query.filter_by(username=form.username.data).first()
+      if user:
+         if check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
+            return redirect(url_for('home'))
+      return '<h1 style="font-family: trebuchet ms" >Invalid username or password </h1>''<p style="font-family: trebuchet ms"> <a href="/login">Login</a></p>'
+      #return '<h1>' + form.username.data + ' ' + form.password.data + '</h1>'
+
+   
+   return render_template('login.html', form=form)
+
+#------------------------------------------------------------
+# the signup page
+#------------------------------------------------------------
+@app.route('/signup', methods = ['GET','POST'])
+def signup():
+   form = RegisterForm()
+
+   if form.validate_on_submit():
+      hashed_password = generate_password_hash(form.password.data, method = 'sha256')
+      new_user = User(username = form.username.data, email = form.email.data, password = hashed_password)
+      db.session.add(new_user)
+      db.session.commit()
+
+      return redirect(url_for('home'))
+      
+      #return '<h1>' + form.username.data + ' ' + form.email.data +  ' ' + form.password.data + '</h1>'
+
+   
+   return render_template('signup.html', form=form)
+
+#------------------------------------------------------------
+# logout
+#------------------------------------------------------------
+@app.route('/logout')
+@login_required
+def logout():
+   logout_user()
+   return redirect(url_for('home'))
+
 
 #------------------------------------------------------------
 # creating a new buggy:
@@ -100,7 +204,7 @@ def create_buggy():
        ten = tyretypecost * 0.1
        tennum = float(ten) * int(rem)
        tyrecost = tyrecost + tennum
-    print (tyrecost)
+##    print (tyrecost)
                 
 ##    cost = cost + tyrecost
 ##    * (tyrecosts.get(request.form['tyres']))
@@ -476,10 +580,7 @@ def edit_buggy(buggy_id):
 
 
 #------------------------------------------------------------
-# get JSON from current record
-#   this is still probably right, but we won't be
-#   using it because we'll be dipping diectly into the
-#   database
+# get JSON from current record for specific buggy
 #------------------------------------------------------------
 @app.route('/json/<buggy_id>', methods = ['POST','GET'])
 def summary(buggy_id):
@@ -495,10 +596,7 @@ def summary(buggy_id):
     )
 
 #------------------------------------------------------------
-# delete the buggy
-#   don't want DELETE here, because we're anticipating
-#   there always being a record to update (because the
-#   student needs to change that!)
+# deleting the buggy
 #------------------------------------------------------------
 @app.route('/delete/<buggy_id>', methods = ['POST','GET'])
 def delete_buggy(buggy_id):
