@@ -3,13 +3,13 @@
 
 <style>
   .cs1999-tasks {
-    border-top: 1px solid black;
+    border-top: 1px #666699;
     margin-top: 4em;
   }
   .cs1999-tasks .task {
     margin: 1em;
     padding: 1em;
-    border: 1px solid black;
+    border: 1px #666699;
   }
   .cs1999-tasks .task h2 {
     border-bottom: 3px solid gray;
@@ -27,13 +27,17 @@
 <!--                                                                              -->
 <!-- Maybe... delete all these comments too :-)                                   -->
 
-
-<!-- below this point keep this section tag and paste in a <div> for every        -->
-<!-- task you attempted.                                                          -->
+<section class="cs1999-tasks">
+  <h1>Buggy Race</h1> 
+  <div>
+    With this webserver, you are able to create your own user account to log in with, customise and create create uniquely designed buggies to your taste with your own flag that you can race with your friends!
+  </div>
+</section>
 
 <section class="cs1999-tasks">
-
+<h1>Task Overviews</h1> 
   <div class="task">
+
   <h2>0-GET Get the source code</h2>
   <p>
     I completed 0-GET by forking the repository within GitHub so it made a copy in my own GitHub account which I could use later on.
@@ -45,7 +49,7 @@
   <p>
     After copying the URL for the repository from GitHub in order to be able to clone the repo, I opened up my terminal on Mac and typed in <code>git clone https://github.com/RHUL-CS-Projects/CS1999-buggy-race-editor.git </code> . To be able to run the app I had to create a virtual environment, install any dependencies, activate that said virtual environment and run the webserver.
   </p>
-  <p></p>
+  <p>
     Before creating the virtual environment, I had to <code>cd</code> into the directory in which the buggy repo is saved. I then created a directory called <code>venv</code> in which Python will save any files that the virtual environment will use by typing in <code>python3 -m venv venv</code>. To activate that virtual enviroment I typed <code>source venv/bin/activate</code>. For the app to initially work, I had to install several libraries that was listed out in requirements.txt with <code>pip install -r requirements.txt</code>. The <code>-r</code> is the part of the instruction that searches for requirements.txt. I then opened up the database using <code>python3 init_db.py</code>. Finally running the webserver was easily done by setting Flask in development mode and calling app.py with <code>FLASK_ENV=development python3 app.py</code>
   </p>
 </div>
@@ -171,10 +175,43 @@
 <div class="task">
   <h2>4-USERS Add users (and sessions) so not just anyone can edit a buggy</h2>
   <p>
-    <!-- sentence on _how_ you fixed it -->
+    For this, I had to install a lot of things. I had to <code>pip install flask-bootstrap, flask-wtf, flask-login, wtforms, flask-sqlalchemy</code>. From those, I imported <code>redirect, session, url_for, g, Bootstrap, LoginManager, UserMixin, login_user, login_required, logout_user, current_user, FLaskForm, StringField, PasswordField, SubmitField, BooleanField, DataRequired, Length, Email, Equal To, InputRequired, SQLAlchemy</code> and finally <code>from werkzeug.security import generate_generate_password_hash, check_password_hash</code>
   </p>
   <p>
-    <!-- sentence(s) on anything interesting/incomplete you did -->
+    I had to initalise Bootstrap and login_manager Bootstrap(app) db = SQLAlchemy(app) login_manager = LoginManager() login_manager.init_app(app) login_manager.login_view = 'login'. I created a database within python3 called Users which had columns of id, username, email, password and I set requirements for each i.e. username = db.Column(db.String(15), unique=True) meaning that it had to be unique with maximum string of 15. I activated the login manager for each user with a fuction called load_user which took in the parameters of user_id and fetched users using User.query. I created two more classes called LoginForm and RegisterForm which both took in parameters of FlaskForm but LoginForm had username, password, remember and RegisterForm had email, username and password. These forms used StringField, PasswordField and BooleanField, which are responsible for rendering and data conversion, they delegate to validators for data validation. Hence I also put in validators for each field for example <code>validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])</code> which ensured that the email form cannot stay empty and had a maximum length of 50 characters. I then configurated app.py with a secret key and the database using SQLALCHEMY_DATABASE_URI
+  </p>
+  <p>
+    For the index page, I added <code>@login_required</code>.  I added the login route which had a function that first finds the username that is imputted in the form with the users.db using <code>User.query.filter_by</code> and then checks the user.password with the one in form.password.data. If this is correct, it redirects the url to index.html if not it outputs 'Invalid username or password'. The idea is the same for the signup route but this time once the form is validated, the password that is created is then changed into a 'sha256' cryptographic hash type which encodes the users password into a cryptographic hash when it is stored in users.db. This prevents the password being stolen if the database is hacked. I also created a route for user logout which just uses <code>logout_user()</code>  but it is <code>@login_required</code>, which makes sense because you cant log out if you haven't logged in? It prevents the ability for users to directly go to <code>/logout</code> without signing in first.
+  </p>
+  <p>
+    I added the css pages for signin called signin.css, it uses the Bootstrap framework so its easier for users to navigate. I added a log out button on index.html and added login.html with the code in templates. Login.html uses wtf-forms to directly access the forms in app.py. I did the same when adding signup.html.
+  </p>
+</div>
+
+<div class="task">
+  <h2>4-OWNER A buggy belongs to a user</h2>
+  <p>
+    I did try to implement 4-OWNERS by adding foreign keys into init_db.py. I added <code>FOREIGN KEY (user_id) REFERENCES User(id)</code> but although the databases had the correct data when I opened them in my terminal using <code>sqlite3, .tables, and select * from;</code>, databases.db did not access the data from users.db as when I opened databases.db I found <code>1| |4|knobbly|4|white|black|plain|petrol|1||0|0|none|none|0|steady|</code>, where the space is meant to be user_id. That's probably why 4-OWNER doesnt work.
+  </p>
+</div>
+
+<div class="task">
+  <h2>4-PASS Add password protection to the users</h2>
+  <p>
+    I implemented this with 4-USERS so all the information and steps is under 4-USERS.
+  </p>
+</div>
+
+<div class="task">
+  <h2>5-RESET Password reset</h2>
+  <p>
+   I did try to implement 5-RESET but I stopped mid-way since I wasn't sure how to progress.
+  </p>
+  <p>
+    Anyways, I went about this by installing a few modules: os, itsdangerous and flask-mail and importing TimedJSONWebSignatureSerializer as Serializer and Mail.  I configured app.py, added the mail server, mail port, enabled transport security layer encryption, the mail username and password. I did create the functions that returns a token. The reset token is a one-code to verify that the email address to which the link to reset the password is sent to the right user. I set the expiry of the token to 30 minutes using <code>expires_sec=1800</code>. It uses Serializer which decoded the secret key into unicode so it can be read. I then created another function to verify the token using it against the user_id. Afterwards I added 2 classes to request a password reset and one for the actual reset password form. They both took parameters of FlaskForm, using StringField, PasswordField and SubmitField. But also, within RequestResetForm, I created a function that validated the email inputted by the user with the database to check that the email was registered in the first place. As well as classes, I created 2 routes that one, checks that the user is authenticated and if so, validates the reset request and sends an email then redirecting to the login page. The other route is for after the reset password token was used and needs to be verified by the user, if it isnt then a warning is sent and redirected to the reset request form.
+  </p>
+  <p>
+    I did finally add the links to reset the password within login.html, added reset_request.html and reset_token.html.
   </p>
 </div>
 
