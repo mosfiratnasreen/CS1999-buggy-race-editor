@@ -16,21 +16,10 @@
   }
 </style>
 
-<!-- see tech note about the poster:  
-      https://rhul-cs-projects.github.io/CS1999-buggy-race-server/                -->
-<!--                                                                              -->
-<!-- anything you want here: make it beautiful! make it appealing! make it clear! -->
-<!-- you can drop images into static/assets if you want... and access them        -->
-<!-- here with <img src="/static/image-filename.png" alt="diagram" />             -->
-<!--                                                                              -->
-<!-- Of course you can edit static/app.css too if you want. It's your webserver,  -->
-<!--                                                                              -->
-<!-- Maybe... delete all these comments too :-)                                   -->
-
 <section class="cs1999-tasks">
   <h1>Buggy Race</h1> 
   <div>
-    With this webserver, you are able to create your own user account to log in with, customise and create create uniquely designed buggies to your taste with your own flag that you can race with your friends!
+    With this webserver, you are able to create your own user account to log in with, customise and create create uniquely designed buggies to your taste with it's own flag that you can race with your friends!
   </div>
 </section>
 
@@ -47,7 +36,7 @@
 <div class="task">
   <h2>0-RUN Get app running and view it in a browser</h2>
   <p>
-    After copying the URL for the repository from GitHub in order to be able to clone the repo, I opened up my terminal on Mac and typed in <code>git clone https://github.com/RHUL-CS-Projects/CS1999-buggy-race-editor.git </code> . To be able to run the app I had to create a virtual environment, install any dependencies, activate that said virtual environment and run the webserver.
+    After copying the URL for the repository from GitHub, in order to be able to clone the repo, I opened up my terminal on Mac and typed in <code>git clone https://github.com/RHUL-CS-Projects/CS1999-buggy-race-editor.git </code> . To be able to run the app I had to create a virtual environment, install any dependencies, activate that said virtual environment and run the webserver.
   </p>
   <p>
     Before creating the virtual environment, I had to <code>cd</code> into the directory in which the buggy repo is saved. I then created a directory called <code>venv</code> in which Python will save any files that the virtual environment will use by typing in <code>python3 -m venv venv</code>. To activate that virtual enviroment I typed <code>source venv/bin/activate</code>. For the app to initially work, I had to install several libraries that was listed out in requirements.txt with <code>pip install -r requirements.txt</code>. The <code>-r</code> is the part of the instruction that searches for requirements.txt. I then opened up the database using <code>python3 init_db.py</code>. Finally running the webserver was easily done by setting Flask in development mode and calling app.py with <code>FLASK_ENV=development python3 app.py</code>
@@ -67,10 +56,10 @@
     One by one, I added each item into the form and saved it into the database. At first, in app.py I added flag_color with <code>flag_color = request.form['flag_color'] msg = f"qty_wheels={qty_wheels}", "flag_color={flag_color}"</code> and <code>cur.execute("UPDATE buggies set qty_wheels=?, flag_color=?  WHERE id=?", (qty_wheels, flag_color, DEFAULT_BUGGY_ID))</code>. The second set of code updates the buggies table in init_db.py with whatever is inputted for flag_color.
   </p>
   <p>
-    In init_db.py, I added the default value for flag_color with <code>flag_color            VARCHAR(20) DEFAULT "white",</code>
+    In init_db.py, I added the default value for flag_color with <code>flag_color VARCHAR(20) DEFAULT "white",</code>
   </p>
   <p>
-    In buggy-form.html, I added a form for flag_color with <code> < label > for="flag_color">Colour of flag:< /label >< input type="text" name="flag_color" < / input ></code> From now on, I will have to add a space between the tags otherwise it will actually implement the code as it is in the webserver instead of text for this poster. This is all starts under commit b66b72f but I added the rest of the items into the form, whilst adding it in init_db.py too except for the boolean values at the end i.e. fireproof?
+    In buggy-form.html, I added a form for flag_color with <code> < label > for="flag_color">Colour of flag:< /label >< input type="text" name="flag_color" < / input ></code> From now on, I will have to add a space between the tags otherwise it will actually implement the code as it is in the webserver instead of text for this poster. This is all under commit b66b72f but I added the rest of the items into the form, whilst adding it in init_db.py too except for the boolean values at the end i.e. fireproof?
   </p>
 </div>
 
@@ -80,7 +69,7 @@
     Again, one by one I added the validation for each of the items under its code in app.py.
   </p>
   <p>
-    I think something I did uniquely was that within my terminal that was running my webserver, after interrupting the server with <code>^C</code>, I typed <code>pip install colour</code> which "converts and manipulates common color representation" (https://pypi.org/project/colour/).  From that, I added <code>from colour import Color</code> and a function that checks if the input is a colour. I also appended each error message from the validation errors into a list to be outputted in buggy-form.html with <code>{ {msg} }</code>
+    Something I did uniquely was, within my terminal that was running my webserver, after interrupting the server with <code>^C</code>, I typed <code>pip install colour</code> which "converts and manipulates common color representation" (https://pypi.org/project/colour/).  From that, I added <code>from colour import Color</code> and a function that checks if the input is a colour. I also appended each error message from the validation errors into a list to be outputted in buggy-form.html with a for loop for <code>{ {msg} }</code>
   </p>
 </div>
 
@@ -94,14 +83,14 @@
 <div class="task">
   <h2>2-EDIT Edit the record by loading its current values into the form</h2>
   <p>
-    For 2-EDIT I loaded the current values of each item into the form by adding <code>con = sql.connect(DATABASE_FILE) con.row_factory = sql.Row cur = con.cursor() cur.execute("SELECT * FROM buggies") record = cur.fetchone(); return render_template("buggy-form.html", buggy=record)</code> into app.py which accesses the database and for each item I added its value within each item tag for example <code> value="{ { buggy ['qty_wheels'] } }"</code>
+    For 2-EDIT I loaded the current values of each item into the form by adding <code>con = sql.connect(DATABASE_FILE) con.row_factory = sql.Row cur = con.cursor() cur.execute("SELECT * FROM buggies") record = cur.fetchone(); return render_template("buggy-form.html", buggy=record)</code> into app.py. This accesses the database and for each item, I added its value within each item tag i.e. <code> value="{ { buggy ['qty_wheels'] } }"</code>
   </p>
 </div>
 
 <div class="task">
   <h2>2-FORM Make the form better</h2>
   <p>
-    Although I did do this after a lot of the steps, I still added drop down menus into my code so that the user can select options without having to type them out and risk validation errors. I also made sure that if an option was selected, that option would be displayed after submission if they chose to edit the buggy. I did this by adding an if statement within the select and option tag. I cannot post the exact code as it throws up errors but this is under commit ca803b2.
+    Although I did do this after a lot of the sub-phases, I still added drop down menus into my code so that the user can select options without having to type them out and risk more validation errors. I also made sure that if an option was selected, that option would be displayed after submission if they chose to edit the buggy. I did this by adding an if statement within the select and option tag. I cannot post the exact code as it throws up errors but this is under commit ca803b2.
   </p>
 </div>
 
@@ -118,7 +107,7 @@
 <div class="task">
   <h2>2-RULES Add validation according to the game rules</h2>
   <p>
-   Luckily I added rule validations when I was implementing 1-VALID as I read the rules in the buggy specs but I still had some perfecting to do. I added the rule validation for flag_color_secondary so that if the flag_pattern isnt plain, both colours cannot be the same. Also after debugging, I fixed the validation that you cannot have units for hamsterbooster without selecting any power type as booster and fixed the 10% tyre cost rule as well as the rule that the algo cannot be buggy. This was working before but back then, even if I had a power type as hamster with a positive number of hamster boosters, I would throw up the validation error.
+   Luckily I added rule validations when I was implementing 1-VALID as I read the rules in the buggy specs but I still had some perfecting to do. I additionally added the rule validation for flag_color_secondary so that if the flag_pattern isnt plain, both colours cannot be the same. Also after debugging, I fixed the validation that you cannot have units for hamsterbooster without selecting any power type as booster and fixed the 10% tyre cost rule as well as the rule that the algo cannot be buggy. This was working before but back then, even if I had a power type as hamster with a positive number of hamster boosters, it would throw up the validation error.
   </p>
 </div>
 
@@ -132,17 +121,17 @@
 <div class="task">
   <h2>3-AUTOFILL Add auto-fill to the edit forms</h2>
   <p>
-    I left this out since I wasnt sure how to go about this but I knew that the only items I left out were the boolean ones and they were default false regardless but also I didnt set a stated cost. 
+    I left this out since I wasnt sure how to go about this but I knew that the only items I left out were the boolean ones and they were default false regardless hence not affecting the total cost, but I didnt set a stated cost. 
   </p>
 </div>
 
 <div class="task">
   <h2>3-MULTI Allow different buggies to be created</h2>
   <p>
-    I allowed the possibility of having multiple buggies by ensuring that when buggies are shown, all of them are fetched rather than one. I did this by adding <code>records = cur.fetchall(); return render_template("buggy.html", buggies = records)</code>. I added the ability to edit one buggy at a time too with <code>cur.execute("INSERT INTO buggies</code> and <code>VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"</code>. It was vital that the number of '?' matched the number of items in the form and ensured that the buggy id's were valid with <code> if buggy_id.isdigit():</code> I also created function for edit that selected singular buggies to edit.
+    I allowed the possibility of having multiple buggies by ensuring that when buggies are shown, all of them are fetched rather than one. I did this by adding <code>records = cur.fetchall(); return render_template("buggy.html", buggies = records)</code>. I added the ability to edit one buggy at a time too with <code>cur.execute("INSERT INTO buggies</code> and <code>VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"</code>. It was vital that the number of '?' matched the number of items in the form and ensured that the buggy id's were valid with <code> if buggy_id.isdigit():</code> I also created a route with a function to edit specific buggies.
   </p>
   <p>
-    In buggy.html, I added a for statement that outputs all of the buggies in the buggies table and hidden the id in buggy-form.html. I also had to change that when you create a new buggy, it wont preload the values from the last buggy saved, and I did this by setting <code>buggy=None</code> in <code>return render_template("buggy-form.html", buggy=None)</code>. But also, I added links to url that edits a specific buggy id in buggy.html, this is in commit 6c1dc7d.
+    In buggy.html, I added a for statement that outputs all of the buggies in the buggies database one by one, and hidden the id in buggy-form.html. I also had to change that when you create a new buggy, it wont preload the values from the last buggy saved, and I did this by setting <code>buggy=None</code> in <code>return render_template("buggy-form.html", buggy=None)</code>. But also, I added links to url that edits a specific buggy id in buggy.html, this is in commit 6c1dc7d.
   </p>
 </div>
 
@@ -159,7 +148,7 @@
     After a lot of trial and error I created an if statment at the top of buggy.html which takes each colour and secondary colour and displays the flag in a table underneath each buggy. I created a table using <code>< td span="1" style="width: 45%;">Buggy Flag:</ td></code>. For the if statement, I created it within the style tag and within a for statement and for each buggy id I created the css for each flag pattern. If the pattern was 'vstripe', I created a repeating linear gradient with a degree of 90, a linear gradient for hstripe, a repeating linear gradient with a degree of 30 for dstripe, a background image with lines of linear gradients for checker with flag colour and a radial gradient for spot.
   </p>
   <p>
-    I did try and put the if statement for the flag patterns down where the flag table is, and although this "worked", if you inspected element, it took the colours from the recently submitted buggy.
+    I did try and put the if statement for the flag patterns down where the flag table is, and although this "worked", if you inspected the page element, it took the colours from the recently submitted buggy.
   </p>
 
   <div class="task">
@@ -168,7 +157,7 @@
     I was only able to create a list of manual testing instructions. I ensured that I tested data that had specific scenarios that would alter the totalcost than normally. The list of instructions is saved within TESTING.md
   </p>
   <p>
-    I did try and do automatic testing but this didnt work out too well. It did work for normal cost without using functions from app.py but when I tried to add a function within app.py to use in test_app.py with unittest, there were errors for the code in the terminal. I tried to recreate it now to show it here but it threw more errors.
+    I did try and do automatic testing but this didnt work out too well. It did work for normal cost without importing functions from app.py but when I tried to add a function within app.py to use in test_app.py with unittest, there were errors calculating the totalcost in app.py. I tried to recreate it now to show it here but it threw more errors.
   </p>
 </div>
 
@@ -176,6 +165,9 @@
   <h2>4-USERS Add users (and sessions) so not just anyone can edit a buggy</h2>
   <p>
     For this, I had to install a lot of things. I had to <code>pip install flask-bootstrap, flask-wtf, flask-login, wtforms, flask-sqlalchemy</code>. From those, I imported <code>redirect, session, url_for, g, Bootstrap, LoginManager, UserMixin, login_user, login_required, logout_user, current_user, FLaskForm, StringField, PasswordField, SubmitField, BooleanField, DataRequired, Length, Email, Equal To, InputRequired, SQLAlchemy</code> and finally <code>from werkzeug.security import generate_generate_password_hash, check_password_hash</code>
+  </p>
+  <p>
+    Flask Bootstrap is primarily used for web-designing which is why I decided to implement it, WTF is used to create a interactive user interface, flask login provides user session management for Flask itself and finally SQLAlchemy is an extension for Flask that adds SQLAlchemy to app.py
   </p>
   <p>
     I had to initalise Bootstrap and login_manager Bootstrap(app) db = SQLAlchemy(app) login_manager = LoginManager() login_manager.init_app(app) login_manager.login_view = 'login'. I created a database within python3 called Users which had columns of id, username, email, password and I set requirements for each i.e. username = db.Column(db.String(15), unique=True) meaning that it had to be unique with maximum string of 15. I activated the login manager for each user with a fuction called load_user which took in the parameters of user_id and fetched users using User.query. I created two more classes called LoginForm and RegisterForm which both took in parameters of FlaskForm but LoginForm had username, password, remember and RegisterForm had email, username and password. These forms used StringField, PasswordField and BooleanField, which are responsible for rendering and data conversion, they delegate to validators for data validation. Hence I also put in validators for each field for example <code>validators=[InputRequired(), Email(message='Invalid email'), Length(max=50)])</code> which ensured that the email form cannot stay empty and had a maximum length of 50 characters. I then configurated app.py with a secret key and the database using SQLALCHEMY_DATABASE_URI
@@ -209,6 +201,9 @@
   </p>
   <p>
     Anyways, I went about this by installing a few modules: os, itsdangerous and flask-mail and importing TimedJSONWebSignatureSerializer as Serializer and Mail.  I configured app.py, added the mail server, mail port, enabled transport security layer encryption, the mail username and password. I did create the functions that returns a token. The reset token is a one-code to verify that the email address to which the link to reset the password is sent to the right user. I set the expiry of the token to 30 minutes using <code>expires_sec=1800</code>. It uses Serializer which decoded the secret key into unicode so it can be read. I then created another function to verify the token using it against the user_id. Afterwards I added 2 classes to request a password reset and one for the actual reset password form. They both took parameters of FlaskForm, using StringField, PasswordField and SubmitField. But also, within RequestResetForm, I created a function that validated the email inputted by the user with the database to check that the email was registered in the first place. As well as classes, I created 2 routes that one, checks that the user is authenticated and if so, validates the reset request and sends an email then redirecting to the login page. The other route is for after the reset password token was used and needs to be verified by the user, if it isnt then a warning is sent and redirected to the reset request form.
+  </p>
+  <p>
+    Importing os allows the developer to interface with the underlying operating systems that app.py is running on, itsdangerous allows data to be passed to trusted environments and back, flask mail allows the web application to send emails using SMTP the way I chose to use smtp.googlemail.com which is the free email provided by Google.
   </p>
   <p>
     I did finally add the links to reset the password within login.html, added reset_request.html and reset_token.html.
