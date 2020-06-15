@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+  .cs1999-tasks {
+    border-top: 1px solid black;
+    margin-top: 4em;
+  }
+  .cs1999-tasks .task {
+    margin: 1em;
+    padding: 1em;
+    border: 1px solid black;
+  }
+  .cs1999-tasks .task h2 {
+    border-bottom: 3px solid gray;
+  }
+</style>
+
+<!-- see tech note about the poster:  
+      https://rhul-cs-projects.github.io/CS1999-buggy-race-server/                -->
+<!--                                                                              -->
+<!-- anything you want here: make it beautiful! make it appealing! make it clear! -->
+<!-- you can drop images into static/assets if you want... and access them        -->
+<!-- here with <img src="/static/image-filename.png" alt="diagram" />             -->
+<!--                                                                              -->
+<!-- Of course you can edit static/app.css too if you want. It's your webserver,  -->
+<!--                                                                              -->
+<!-- Maybe... delete all these comments too :-)                                   -->
+
+
+<!-- below this point keep this section tag and paste in a <div> for every        -->
+<!-- task you attempted.                                                          -->
+
+<section class="cs1999-tasks">
+
+  <div class="task">
+  <h2>0-GET Get the source code</h2>
+  <p>
+    I completed 0-GET by forking the repository within GitHub so it made a copy in my own GitHub account which I could use later on.
+  </p>
+</div>
+
+<div class="task">
+  <h2>0-RUN Get app running and view it in a browser</h2>
+  <p>
+    After copying the URL for the repository from GitHub in order to be able to clone the repo, I opened up my terminal on Mac and typed in <code>git clone https://github.com/RHUL-CS-Projects/CS1999-buggy-race-editor.git </code> . To be able to run the app I had to create a virtual environment, install any dependencies, activate that said virtual environment and run the webserver.
+  </p>
+  <p></p>
+    Before creating the virtual environment, I had to <code>cd</code> into the directory in which the buggy repo is saved. I then created a directory called <code>venv</code> in which Python will save any files that the virtual environment will use by typing in <code>python3 -m venv venv</code>. To activate that virtual enviroment I typed <code>source venv/bin/activate</code>. For the app to initially work, I had to install several libraries that was listed out in requirements.txt with <code>pip install -r requirements.txt</code>. The <code>-r</code> is the part of the instruction that searches for requirements.txt. I then opened up the database using <code>python3 init_db.py</code>. Finally running the webserver was easily done by setting Flask in development mode and calling app.py with <code>FLASK_ENV=development python3 app.py</code>
+  </p>
+</div>
+
+<div class="task">
+  <h2>0-CHANGE Make a change to a template and see it appear</h2>
+  <p>
+    I didnt change much initally to see how it works. I only changed 'My buggy editor' to 'My Buggy Editor'. This is commit 586c7d2 on GitHub.
+  </p>
+</div>
+
+<div class="task">
+  <h2>1-ADD Add more data to the form</h2>
+  <p>
+    One by one, I added each item into the form and saved it into the database. At first, in app.py I added flag_color with <code>flag_color = request.form['flag_color'] msg = f"qty_wheels={qty_wheels}", "flag_color={flag_color}"</code> and <code>cur.execute("UPDATE buggies set qty_wheels=?, flag_color=?  WHERE id=?", (qty_wheels, flag_color, DEFAULT_BUGGY_ID))</code>. The second set of code updates the buggies table in init_db.py with whatever is inputted for flag_color.
+  </p>
+  <p>
+    In init_db.py, I added the default value for flag_color with <code>flag_color            VARCHAR(20) DEFAULT "white",</code>
+  </p>
+  <p>
+    In buggy-form.html, I added a form for flag_color with <code> < label > for="flag_color">Colour of flag:< /label >< input type="text" name="flag_color" < / input ></code> From now on, I will have to add a space between the tags otherwise it will actually implement the code as it is in the webserver instead of text for this poster. This is all starts under commit b66b72f but I added the rest of the items into the form, whilst adding it in init_db.py too except for the boolean values at the end i.e. fireproof?
+  </p>
+</div>
+
+<div class="task">
+  <h2>1-VALID Add basic data validation</h2>
+  <p>
+    Again, one by one I added the validation for each of the items under its code in app.py.
+  </p>
+  <p>
+    I think something I did uniquely was that within my terminal that was running my webserver, after interrupting the server with <code>^C</code>, I typed <code>pip install colour</code> which "converts and manipulates common color representation" (https://pypi.org/project/colour/).  From that, I added <code>from colour import Color</code> and a function that checks if the input is a colour. I also appended each error message from the validation errors into a list to be outputted in buggy-form.html with <code>{ {msg} }</code>
+  </p>
+</div>
+
+<div class="task">
+  <h2>1-STYLE Style your editor just how you like it</h2>
+  <p>
+    I only simply changed the colours of the background, buttons, the repeating linear gradient, font and made sure that everything was aligned to the center of the page. I also added an image to the bottom of each page.
+  </p>
+</div>
+
+<div class="task">
+  <h2>2-EDIT Edit the record by loading its current values into the form</h2>
+  <p>
+    For 2-EDIT I loaded the current values of each item into the form by adding <code>con = sql.connect(DATABASE_FILE) con.row_factory = sql.Row cur = con.cursor() cur.execute("SELECT * FROM buggies") record = cur.fetchone(); return render_template("buggy-form.html", buggy=record)</code> into app.py which accesses the database and for each item I added its value within each item tag for example <code> value="{ { buggy ['qty_wheels'] } }"</code>
+  </p>
+</div>
+
+<div class="task">
+  <h2>2-FORM Make the form better</h2>
+  <p>
+    Although I did do this after a lot of the steps, I still added drop down menus into my code so that the user can select options without having to type them out and risk validation errors. I also made sure that if an option was selected, that option would be displayed after submission if they chose to edit the buggy. I did this by adding an if statement within the select and option tag. I cannot post the exact code as it throws up errors but this is under commit ca803b2.
+  </p>
+</div>
+
+<div class="task">
+  <h2>2-COST Calculate and save the game cost of the buggy</h2>
+  <p>
+    Eventhough it was tedious, it worked. I created the cost of the buggy with several if statements and variables. The cost per item would be calculated with type multiplied with units and then added to a global variable called cost. The total cost would be outputted in updated.html after the buggy is submitted.
+  </p>
+  <p>
+    I did try add dictionaries containing the costs within the code but it wasn't accessing its respective value for each cost so I stuck to the if statements.
+  </p>
+</div>
+
+<div class="task">
+  <h2>2-RULES Add validation according to the game rules</h2>
+  <p>
+   Luckily I added rule validations when I was implementing 1-VALID as I read the rules in the buggy specs but I still had some perfecting to do. I added the rule validation for flag_color_secondary so that if the flag_pattern isnt plain, both colours cannot be the same. Also after debugging, I fixed the validation that you cannot have units for hamsterbooster without selecting any power type as booster and fixed the 10% tyre cost rule as well as the rule that the algo cannot be buggy. This was working before but back then, even if I had a power type as hamster with a positive number of hamster boosters, I would throw up the validation error.
+  </p>
+</div>
+
+<div class="task">
+  <h2>3-ENV Switch to using development or production environments</h2>
+  <p>
+    Not sure what to write here other than I have checked that my webserver also runs within production mode. I checked this by setting <code>FLASK_ENV=production</code> before running app.py
+  </p>
+</div>
+
+<div class="task">
+  <h2>3-AUTOFILL Add auto-fill to the edit forms</h2>
+  <p>
+    I left this out since I wasnt sure how to go about this but I knew that the only items I left out were the boolean ones and they were default false regardless but also I didnt set a stated cost. 
+  </p>
+</div>
+
+<div class="task">
+  <h2>3-MULTI Allow different buggies to be created</h2>
+  <p>
+    I allowed the possibility of having multiple buggies by ensuring that when buggies are shown, all of them are fetched rather than one. I did this by adding <code>records = cur.fetchall(); return render_template("buggy.html", buggies = records)</code>. I added the ability to edit one buggy at a time too with <code>cur.execute("INSERT INTO buggies</code> and <code>VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"</code>. It was vital that the number of '?' matched the number of items in the form and ensured that the buggy id's were valid with <code> if buggy_id.isdigit():</code> I also created function for edit that selected singular buggies to edit.
+  </p>
+  <p>
+    In buggy.html, I added a for statement that outputs all of the buggies in the buggies table and hidden the id in buggy-form.html. I also had to change that when you create a new buggy, it wont preload the values from the last buggy saved, and I did this by setting <code>buggy=None</code> in <code>return render_template("buggy-form.html", buggy=None)</code>. But also, I added links to url that edits a specific buggy id in buggy.html, this is in commit 6c1dc7d.
+  </p>
+</div>
+
+<div class="task">
+  <h2>3-DEL Allow buggies to be deleted</h2>
+  <p>
+    To allow buggies to be deleted, I added a route to delete specific buggies by adding <code>@app.route('/delete/<buggy_id>', methods = ['POST','GET']) def delete_buggy(buggy_id):</code> in app.py. I also added a link to the url that deletes a specific buggy id in buggy.html, this is in commit e89c9ed.
+  </p>
+</div>
+
+<div class="task">
+  <h2>3-FLAG Display the pennant graphically</h2>
+  <p>
+    After a lot of trial and error I created an if statment at the top of buggy.html which takes each colour and secondary colour and displays the flag in a table underneath each buggy. I created a table using <code>< td span="1" style="width: 45%;">Buggy Flag:</ td></code>. For the if statement, I created it within the style tag and within a for statement and for each buggy id I created the css for each flag pattern. If the pattern was 'vstripe', I created a repeating linear gradient with a degree of 90, a linear gradient for hstripe, a repeating linear gradient with a degree of 30 for dstripe, a background image with lines of linear gradients for checker with flag colour and a radial gradient for spot.
+  </p>
+  <p>
+    I did try and put the if statement for the flag patterns down where the flag table is, and although this "worked", if you inspected element, it took the colours from the recently submitted buggy.
+  </p>
+
+  <div class="task">
+  <h2>3-TESTS Write some tests</h2>
+  <p>
+    I was only able to create a list of manual testing instructions. I ensured that I tested data that had specific scenarios that would alter the totalcost than normally. The list of instructions is saved within TESTING.md
+  </p>
+  <p>
+    I did try and do automatic testing but this didnt work out too well. It did work for normal cost without using functions from app.py but when I tried to add a function within app.py to use in test_app.py with unittest, there were errors for the code in the terminal. I tried to recreate it now to show it here but it threw more errors.
+  </p>
+</div>
+
+<div class="task">
+  <h2>4-USERS Add users (and sessions) so not just anyone can edit a buggy</h2>
+  <p>
+    <!-- sentence on _how_ you fixed it -->
+  </p>
+  <p>
+    <!-- sentence(s) on anything interesting/incomplete you did -->
+  </p>
+</div>
+
+<!-- this closes the section: keep it in! -->
+</section>
+
+{% endblock %}

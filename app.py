@@ -1,3 +1,4 @@
+import os
 from flask import Flask, redirect, render_template, request, jsonify, session, url_for, g
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
@@ -6,22 +7,10 @@ from wtforms import StringField, PasswordField, SubmitField, SubmitField, Boolea
 from wtforms.validators import DataRequired, Length, Email, EqualTo, InputRequired
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from flask_mail import Mail
 import sqlite3 as sql
 from colour import Color
-
-
-#class User:
-   #def __init__(self, id, username, password):
-      #self.id = id
-      #self.username = username
-      #self.password = password
-   #def __repr__(self):
-      #return f'<User: {self.username}>'
-
-#users=[]
-#users.append(User(id=1, username='Anthony',password='password'))
-
-#print (users)
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -29,13 +18,33 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER')
+app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS')
+mail = Mail(app)
+
 
 
 class User(UserMixin, db.Model):
    id = db.Column(db.Integer, primary_key=True)
    username = db.Column(db.String(15), unique=True)
    email = db.Column(db.String(50), unique = True)
-   password = db.Column(db.String(80)) 
+   password = db.Column(db.String(80))
+
+   def get_reset_token(self,expires_sec=1800):
+      s = Serializer(app.config['SECRET_KEY'], expires_sec)
+      return s.dumps({user_id: self.id}).decode('utf-8')
+
+   @staticmethod
+   def verify_reset_token(token):
+      s = Serializer(app.config['SECRET_KEY'])
+      try:
+         user_id = s.loads(token)['user_id']
+      except:
+         return None
+      return User.query.get(user_id)
    
 @login_manager.user_loader
 def load_user(user_id):
@@ -52,6 +61,19 @@ class RegisterForm(FlaskForm):
    username = StringField('Username', validators=[InputRequired(), Length(min=4, max=15)])
    password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=80)])
 
+class RequestResetForm(FlaskForm):
+   email = StringField('Email', validators = [DataRequired(), Email()])
+   submit = SubmitField('Request Password Reset')
+
+   def validate_email(self,email):
+      user = User.query.filter_by(email=email.data).first()
+      if user:
+         raise ValidationError ('There is no email with that account. You must register first.')
+
+class ResetPasswordform(FlaskForm):
+   password = PasswordField ('Password', validators = [DataRequired()])
+   confirm_password = PasswordField ('Confim Password', validators = [DataRequired(), EqualTo('password')])
+   submit = SubmitField ('Reset Password')
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///Users/mosfiratnasreen/CS1999-buggy-race-editor/users.db'
@@ -68,6 +90,9 @@ def check_color(color):
       return True
    except ValueError:
       return False
+
+def send_reset_email(user):
+   pass
 
 #------------------------------------------------------------
 # the index page
@@ -124,6 +149,36 @@ def signup():
 def logout():
    logout_user()
    return redirect(url_for('home'))
+
+#------------------------------------------------------------
+# reset password
+#------------------------------------------------------------
+@app.route('/reset_password', methods = ['GET', 'POST'])
+def reset_request():
+   if current_user.is_authenticated:
+      return redirect(url_for('home'))
+   form = RequestResetForm()
+   if form.validate_on_submit():
+      user = User.query.filter_by(email = form.email.data).first()
+      send_reset_email(user)
+      flash ('An email has been sent with instructions to reset passsword.' , 'info')
+      return redirect(url_for('login'))
+   return render_template ('reset_request.html', title = 'Reset Password', form=form)
+
+#------------------------------------------------------------
+# reset password w token
+#------------------------------------------------------------
+@app.route('/reset_password/<token>', methods = ['GET', 'POST'])
+def reset_token():
+   if current_user.is_authenticated:
+      return redirect(url_for('home'))
+   user = User.verify_reset_token(token)
+   if user is None:
+      flash('That is an invalid or expired token','warning')
+      return redirect(url_for('reset_request'))
+   form  = ResetPasswordForm()
+   return render_template ('reset_token.html', title ='Reset Password', form=form)
+
 
 
 #------------------------------------------------------------
@@ -613,6 +668,14 @@ def delete_buggy(buggy_id):
   finally:
     con.close()
     return render_template("updated.html", msg = msg)
+
+#------------------------------------------------------------
+# poster
+#------------------------------------------------------------
+@app.route('/poster')
+def poster():
+   return render_template('poster.html')
+
 
 
 if __name__ == '__main__':

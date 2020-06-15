@@ -26,6 +26,7 @@ con.execute("""
 
   CREATE TABLE IF NOT EXISTS buggies (
     id                    INTEGER PRIMARY KEY,
+    user_id               INTEGER,
     qty_wheels            INTEGER DEFAULT 4,
     tyres                 VARCHAR(20) DEFAULT "knobbly",
     qty_tyres             INTEGER DEFAULT 4,
@@ -41,7 +42,8 @@ con.execute("""
     attack                VARCHAR (20) DEFAULT "none",
     qty_attacks           INTEGER DEFAULT 0,
     algo                  VARCHAR (20) DEFAULT "steady",
-    total_cost            INTEGER
+    total_cost            INTEGER,
+    FOREIGN KEY (user_id) REFERENCES User(id)
   )
 
 """)
